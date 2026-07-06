@@ -61,7 +61,7 @@
       color: var(--text); 
       background-color: var(--bg); 
       line-height: 1.6; 
-      padding-bottom: 90px; /* Espacio holgado para el menú inferior */
+      padding-bottom: 90px;
       transition: background-color 0.3s ease, color 0.3s ease; 
     }
 
@@ -449,7 +449,7 @@
     }
 
     /* =========================================
-       MODAL DE PORCIONES
+       MODALES
        ========================================= */
     .modal-overlay { 
       position: fixed; 
@@ -543,7 +543,6 @@
 </head>
 <body>
 
-<!-- IMPORTAR LA BASE DE DATOS EXTERNA -->
 <script src="db.js"></script>
 
 <header>
@@ -552,6 +551,7 @@
       <span class="logo">🥑</span>
       <div>
         <b>AyuKcal</b>
+        <small>Avila Mora Soluciones</small>
       </div>
     </button>
     
@@ -582,9 +582,6 @@
 
 <main>
   
-  <!-- =========================================
-       VISTA: INICIO
-       ========================================= -->
   <section id="inicio" class="view active container">
     <div class="section-header">
       <h1>Tu cuerpo,<br>tus reglas.</h1>
@@ -617,9 +614,6 @@
     </div>
   </section>
 
-  <!-- =========================================
-       VISTA: DIARIO (HISTORIAL)
-       ========================================= -->
   <section id="hoy" class="view container">
     <div class="section-header">
       <h1>📊 Diario</h1>
@@ -635,13 +629,9 @@
     </div>
     
     <div id="daily" class="panel">
-      <!-- Inyectado por JS -->
-    </div>
+      </div>
   </section>
 
-  <!-- =========================================
-       VISTA: COMIDAS Y BUSCADOR
-       ========================================= -->
   <section id="comidas" class="view container">
     <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
@@ -656,24 +646,19 @@
         <h2>🔎 Buscar Alimento</h2>
         <input id="q" class="input" placeholder="Ej. Pollo asado, Aceite, Arepa..." oninput="renderFoods()" style="margin-bottom: 16px;" />
         <div id="foods" class="list" style="max-height: 550px; overflow-y: auto; padding-right: 8px;">
-          <!-- Inyectado por JS -->
-        </div>
+          </div>
       </div>
 
       <div>
         <div class="panel">
           <h2>🍽️ Consumido (<span id="consumidoFecha">Hoy</span>)</h2>
           <div id="todayFoods" class="list">
-            <!-- Inyectado por JS -->
-          </div>
+            </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- =========================================
-       VISTA: AYUNO Y COACH
-       ========================================= -->
   <section id="ayuno" class="view container">
     <div class="section-header">
       <h1>⏳ Ayuno</h1>
@@ -685,10 +670,8 @@
       <div class="timer" id="timer">00:00:00</div>
       <p id="phase" class="muted" style="font-weight: 700; font-size: 1.1rem;">Sin ayuno activo</p>
       
-      <div class="actions" style="justify-content: center; margin-top: 24px;">
-        <button class="btn primary" onclick="startFast()">Iniciar Ayuno</button>
-        <button class="btn danger" onclick="stopFast()">Finalizar</button>
-      </div>
+      <div class="actions" style="justify-content: center; margin-top: 24px;" id="ayunoActions">
+        </div>
     </div>
 
     <div class="grid three">
@@ -707,9 +690,6 @@
     </div>
   </section>
 
-  <!-- =========================================
-       VISTA: PESO Y GRÁFICA
-       ========================================= -->
   <section id="peso" class="view container">
     <div class="section-header">
       <h1>⚖️ Peso</h1>
@@ -723,8 +703,7 @@
           <button class="btn primary">Guardar</button>
         </form>
         <div id="weights" class="list" style="margin-top: 24px; max-height: 250px; overflow-y: auto;">
-          <!-- Inyectado por JS -->
-        </div>
+          </div>
       </div>
       <div class="panel">
         <canvas id="chart"></canvas>
@@ -732,9 +711,6 @@
     </div>
   </section>
 
-  <!-- =========================================
-       VISTA: PERFIL Y CONFIGURACIÓN
-       ========================================= -->
   <section id="perfil" class="view container">
     <div class="section-header">
       <h1>👤 Perfil</h1>
@@ -779,8 +755,7 @@
 
       <div>
         <div class="panel" id="profileBox">
-          <!-- Inyectado por JS -->
-        </div>
+          </div>
         <div class="panel">
           <h2>💾 Sistema</h2>
           <div class="actions">
@@ -798,9 +773,6 @@
 
 </main>
 
-<!-- =========================================
-     MODAL CALCULADORA DE PORCIONES
-     ========================================= -->
 <div id="portionModal" class="modal-overlay">
   <div class="modal">
     <h2 id="modalFoodName" style="font-size: 1.3rem; margin-bottom: 8px;">Nombre Alimento</h2>
@@ -822,9 +794,25 @@
   </div>
 </div>
 
+<div id="fastModal" class="modal-overlay">
+  <div class="modal">
+    <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Ajustar hora de inicio</h2>
+    <p class="muted" style="font-size: 0.95rem; margin-bottom: 24px;">Selecciona la fecha y hora exacta en la que empezaste a ayunar.</p>
+    
+    <form class="form" onsubmit="saveFastTime(event)">
+      <input id="fastDateTime" class="input" type="datetime-local" required style="font-size: 1.1rem; text-align: center; font-weight: 900; margin-bottom: 12px;" />
+      
+      <div class="actions">
+        <button type="button" class="btn" style="flex: 1;" onclick="closeFastModal()">Cancelar</button>
+        <button type="submit" class="btn primary" style="flex: 1;">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="container">
-    <p>&copy; <span id="year"></span> <a href="https://avilamorasoluciones.github.io/ams" target="_blank" rel="noopener noreferrer">Avila Mora Soluciones</a></p>
+    <p>&copy; <span id="year"></span> Avila Mora Soluciones</p>
   </div>
 </footer>
 
@@ -841,6 +829,13 @@ const sanitize = (str) => {
 const getLocalISODate = (d = new Date()) => {
   const tzOffset = d.getTimezoneOffset() * 60000;
   return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
+};
+
+// Formatea los milisegundos a YYYY-MM-DDThh:mm para el input datetime-local
+const getDatetimeLocal = (ms) => {
+  const d = new Date(ms);
+  const tzOffset = d.getTimezoneOffset() * 60000;
+  return new Date(d - tzOffset).toISOString().slice(0, 16);
 };
 
 const KEY = "ayukcal_v7";
@@ -990,7 +985,7 @@ function macros(p) {
   let kcal = 0;
   
   if (p.manualGoal && p.manualGoal >= 500) {
-    kcal = p.manualGoal; // Prevalencia de la meta manual
+    kcal = p.manualGoal; 
   } else {
     kcal = p.goal === "bulk" ? tdee(p) + 300 : p.goal === "maintain" ? tdee(p) : Math.max(1200, tdee(p) - 500);
   }
@@ -1155,7 +1150,6 @@ function confirmAddFood(e) {
   const f = s.db.find(x => x.id === id); 
   if(!f || inputGrams <= 0) return;
   
-  // REGLA DE TRES MATEMÁTICA
   const ratio = inputGrams / f.serv; 
   
   s.foods.unshift({ 
@@ -1212,7 +1206,7 @@ function saveProfile(e) {
 }
 
 // =========================================
-// COACHING DE AYUNO
+// COACHING DE AYUNO (Y EDICIÓN MANUAL)
 // =========================================
 function startFast() { 
   const s = state(); 
@@ -1246,6 +1240,7 @@ function stopFast() {
 
 function renderFast() {
   const s = state();
+  const actionsDiv = $("ayunoActions");
   
   if (s.fast) {
     const timeInSeconds = Math.floor((Date.now() - s.fast.start) / 1000);
@@ -1256,15 +1251,55 @@ function renderFast() {
     $("timer").textContent = [h, m, sec].map(x => String(x).padStart(2, "0")).join(":");
     $("phase").textContent = "🔥 En curso..."; 
     $("phase").style.color = "var(--primary)";
+    
+    actionsDiv.innerHTML = `
+      <button class="btn danger" onclick="stopFast()">Finalizar Ayuno</button>
+      <button class="btn" onclick="openFastModal()">✏️ Editar hora</button>
+    `;
   } else { 
     $("timer").textContent = "00:00:00"; 
     $("phase").textContent = "Inactivo"; 
     $("phase").style.color = "var(--muted)"; 
+    
+    actionsDiv.innerHTML = `
+      <button class="btn primary" onclick="startFast()">Iniciar Ahora</button>
+      <button class="btn" onclick="openFastModal()">⏱️ Inicio Manual</button>
+    `;
   }
   
   $("bestFast").textContent = (s.fasts.length ? Math.max(...s.fasts.map(x => x.hours)) : 0).toFixed(1) + "h";
   $("avgFast").textContent = (s.fasts.length ? s.fasts.reduce((a, b) => a + b.hours, 0) / s.fasts.length : 0).toFixed(1) + "h";
   $("fastCount").textContent = s.fasts.length;
+}
+
+function openFastModal() {
+  const s = state();
+  // Mostrar la hora actual de inicio si hay uno activo, o la hora actual si no hay nada
+  const ms = s.fast ? s.fast.start : Date.now();
+  $("fastDateTime").value = getDatetimeLocal(ms);
+  $("fastModal").classList.add("active");
+}
+
+function closeFastModal() {
+  $("fastModal").classList.remove("active");
+}
+
+function saveFastTime(e) {
+  e.preventDefault();
+  const val = $("fastDateTime").value;
+  if(!val) return;
+  
+  const ms = new Date(val).getTime();
+  
+  if(ms > Date.now()) {
+    return toast("⚠️ No puedes iniciar un ayuno en el futuro 😅");
+  }
+  
+  const s = state();
+  s.fast = { start: ms };
+  save(s);
+  closeFastModal();
+  toast("Hora de inicio de ayuno actualizada ⏱️");
 }
 
 // =========================================
