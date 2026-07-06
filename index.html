@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
+  
+  <title>AyuKcal | Avila Mora Soluciones</title>
+  
+  <meta name="description" content="AyuKcal te ayuda a llevar tus comidas, calorías, peso y ayuno de forma simple, segura y privada." />
+  <meta name="theme-color" content="#0f1714" id="themeColorMeta" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================
+       VARIABLES Y TEMAS (AGUACATE) 🥑
+       ========================================= */
+    :root {
+      --bg: #f4f9f5; 
+      --surface: #ffffff; 
+      --text: #1c2b23; 
+      --muted: #6b8576; 
+      --border: #d4e3db;
+      --primary: #2d6a4f; 
+      --primary-hover: #1b4332;
+      --accent: #10b981; 
+      --danger: #ef4444; 
+      --danger-bg: #fee2e2;
+      --shadow: 0 10px 40px rgba(45, 106, 79, 0.08); 
+      --radius: 24px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f1714; 
+      --surface: #18241e; 
+      --text: #ecfdf5; 
+      --muted: #8ea89a; 
+      --border: #23382e;
+      --primary: #4ade80; 
+      --primary-hover: #22c55e;
+      --accent: #a3e635; 
+      --danger: #f87171; 
+      --danger-bg: rgba(239, 68, 68, 0.15);
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    /* =========================================
+       RESETEO Y BASES
+       ========================================= */
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+
+    body { 
+      font-family: 'Nunito', system-ui, sans-serif; 
+      color: var(--text); 
+      background-color: var(--bg); 
+      line-height: 1.6; 
+      padding-bottom: 90px; /* Espacio holgado para el menú inferior */
+      transition: background-color 0.3s ease, color 0.3s ease; 
+    }
+
+    button, input, select { 
+      font: inherit; 
+      outline: none; 
+    }
+
+    button { 
+      cursor: pointer; 
+      border: none; 
+      background: transparent; 
+    }
+
+    a { 
+      color: var(--primary); 
+      text-decoration: none; 
+      font-weight: 700; 
+    }
+
+    .container { 
+      width: min(900px, 100%); 
+      margin: auto; 
+      padding: 20px; 
+    }
+
+    /* =========================================
+       HEADER Y NAVEGACIÓN
+       ========================================= */
+    header { 
+      background: var(--surface); 
+      border-bottom: 1px solid var(--border); 
+      position: sticky; 
+      top: 0; 
+      z-index: 50; 
+      transition: 0.3s ease;
+    }
+
+    .header-content { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      height: 70px; 
+    }
+
+    .brand { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+      color: var(--text); 
+      text-align: left;
+    }
+
+    .logo { 
+      font-size: 1.8rem; 
+    }
+
+    .brand b { 
+      font-size: 1.3rem; 
+      font-weight: 900; 
+      line-height: 1; 
+      display: block; 
+    }
+
+    .brand small { 
+      color: var(--muted); 
+      font-weight: 600; 
+      font-size: 0.75rem; 
+      margin-top: 4px;
+      display: block;
+    }
+
+    .theme-toggle { 
+      width: 42px; 
+      height: 42px; 
+      border-radius: 50%; 
+      background: var(--bg); 
+      color: var(--text); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      border: 1px solid var(--border); 
+      font-size: 1.2rem;
+      transition: 0.2s ease;
+    }
+
+    /* MENÚ FLOTANTE MÓVIL */
+    .nav-menu { 
+      position: fixed; 
+      bottom: 0; 
+      left: 0; 
+      width: 100%; 
+      background: var(--surface); 
+      border-top: 1px solid var(--border); 
+      display: flex; 
+      justify-content: space-around; 
+      padding: 10px 5px 20px; 
+      z-index: 100; 
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+    }
+
+    .nav-btn { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 4px; 
+      color: var(--muted); 
+      font-weight: 700; 
+      font-size: 0.75rem; 
+      padding: 8px 12px; 
+      border-radius: 16px; 
+      transition: 0.2s ease;
+    }
+
+    .nav-btn i { 
+      font-size: 1.3rem; 
+      font-style: normal; 
+    }
+
+    .nav-btn.active { 
+      color: var(--surface); 
+      background: var(--primary); 
+    }
+
+    /* =========================================
+       DISEÑO GENERAL (PANELES Y TEXTOS)
+       ========================================= */
+    main { 
+      padding-top: 30px; 
+    }
+
+    .view { 
+      display: none; 
+      animation: fadeIn 0.3s ease; 
+    }
+
+    .view.active { 
+      display: block; 
+    }
+
+    @keyframes fadeIn { 
+      from { opacity: 0; transform: translateY(10px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
+
+    .panel { 
+      background: var(--surface); 
+      border-radius: var(--radius); 
+      padding: 28px; 
+      margin-bottom: 24px; 
+      border: 1px solid var(--border); 
+      box-shadow: var(--shadow);
+      transition: 0.3s ease; 
+    }
+
+    .section-header { 
+      margin-bottom: 28px; 
+    }
+
+    h1 { 
+      font-size: clamp(2rem, 5vw, 2.8rem); 
+      font-weight: 900; 
+      line-height: 1.15; 
+      margin-bottom: 10px; 
+    }
+
+    h1 span { 
+      color: var(--primary); 
+    }
+
+    h2 { 
+      font-size: 1.3rem; 
+      margin-bottom: 20px; 
+      font-weight: 800; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+    }
+
+    .muted { 
+      color: var(--muted); 
+    }
+
+    /* =========================================
+       BOTONES Y CONTROLES
+       ========================================= */
+    .actions { 
+      display: flex; 
+      gap: 12px; 
+      flex-wrap: wrap; 
+      margin-top: 20px; 
+    }
+
+    .btn { 
+      background: var(--bg); 
+      color: var(--text); 
+      padding: 14px 24px; 
+      border-radius: 99px; 
+      font-weight: 800; 
+      border: 1px solid var(--border); 
+      text-align: center; 
+      font-size: 1rem; 
+      transition: 0.2s ease;
+    }
+
+    .btn:active { 
+      transform: scale(0.96); 
+    }
+
+    .btn.primary { 
+      background: var(--primary); 
+      color: var(--surface); 
+      border-color: transparent; 
+    }
+
+    .btn.danger { 
+      background: var(--danger-bg); 
+      color: var(--danger); 
+      border-color: transparent; 
+    }
+
+    .btn.icon { 
+      padding: 10px 16px; 
+      font-size: 1.2rem; 
+      border-radius: 16px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+    }
+
+    .input, select { 
+      width: 100%; 
+      padding: 16px; 
+      border-radius: 16px; 
+      border: 2px solid var(--border); 
+      background: var(--bg); 
+      color: var(--text); 
+      font-weight: 600; 
+      transition: 0.2s ease;
+    }
+
+    .input:focus, select:focus { 
+      border-color: var(--primary); 
+    }
+
+    /* =========================================
+       GRILLAS Y TARJETAS (KPI)
+       ========================================= */
+    .grid { 
+      display: grid; 
+      gap: 16px; 
+    }
+
+    .two { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .four { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+
+    .kpi { 
+      background: var(--bg); 
+      padding: 20px; 
+      border-radius: 20px; 
+      text-align: center; 
+      border: 1px solid var(--border); 
+    }
+
+    .kpi span { 
+      display: block; 
+      color: var(--muted); 
+      font-weight: 700; 
+      margin-bottom: 8px; 
+      font-size: 0.85rem; 
+    }
+
+    .kpi b { 
+      font-size: 1.8rem; 
+      font-weight: 900; 
+      color: var(--text); 
+      line-height: 1; 
+    }
+
+    .progress { 
+      height: 8px; 
+      background: var(--border); 
+      border-radius: 99px; 
+      margin-top: 14px; 
+      overflow: hidden; 
+    }
+
+    .progress i { 
+      display: block; 
+      height: 100%; 
+      transition: width 0.4s ease; 
+    }
+
+    /* =========================================
+       LISTAS DE COMIDA
+       ========================================= */
+    .form { 
+      display: grid; 
+      gap: 14px; 
+    }
+
+    .list { 
+      display: grid; 
+      gap: 12px; 
+      margin-top: 16px; 
+    }
+
+    .row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 16px 20px; 
+      border-radius: 18px; 
+      background: var(--bg); 
+      border: 1px solid var(--border); 
+      gap: 12px; 
+    }
+
+    .row-detail {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .badge { 
+      background: var(--border); 
+      padding: 4px 8px; 
+      border-radius: 8px; 
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-right: 4px;
+      margin-top: 4px;
+    }
+
+    /* =========================================
+       COMPONENTES ESPECÍFICOS
+       ========================================= */
+    .date-picker-wrap { 
+      display: inline-flex; 
+      align-items: center; 
+      background: var(--surface); 
+      border: 2px solid var(--border); 
+      border-radius: 99px; 
+      padding: 6px; 
+      margin-bottom: 24px; 
+    }
+
+    .date-picker-wrap button { 
+      padding: 8px 16px; 
+      border-radius: 99px; 
+      background: var(--bg); 
+      font-weight: bold; 
+      color: var(--text); 
+    }
+
+    .date-picker-wrap input { 
+      border: none; 
+      background: transparent; 
+      color: var(--text); 
+      font-weight: 800; 
+      padding: 8px 12px; 
+      text-align: center; 
+      outline: none; 
+      font-family: inherit; 
+    }
+
+    .timer { 
+      font-size: clamp(3rem, 10vw, 4.5rem); 
+      font-weight: 900; 
+      text-align: center; 
+      color: var(--primary); 
+      margin: 16px 0; 
+      font-variant-numeric: tabular-nums; 
+      letter-spacing: -2px; 
+    }
+
+    canvas { 
+      width: 100%; 
+      height: 220px; 
+      border-radius: 16px; 
+      background: var(--bg); 
+      padding: 12px; 
+    }
+
+    /* =========================================
+       MODAL DE PORCIONES
+       ========================================= */
+    .modal-overlay { 
+      position: fixed; 
+      top: 0; left: 0; 
+      width: 100%; height: 100%; 
+      background: rgba(0,0,0,0.6); 
+      z-index: 200; 
+      display: none; 
+      align-items: center; 
+      justify-content: center; 
+      backdrop-filter: blur(4px); 
+    }
+
+    .modal-overlay.active { 
+      display: flex; 
+    }
+
+    .modal { 
+      background: var(--surface); 
+      padding: 30px; 
+      border-radius: var(--radius); 
+      width: 90%; 
+      max-width: 420px; 
+      border: 1px solid var(--border); 
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .footer { 
+      text-align: center; 
+      padding: 20px 20px 40px; 
+      color: var(--muted); 
+      font-weight: 600; 
+      font-size: 0.9rem; 
+    }
+
+    /* TOAST (Notificaciones) */
+    .toast { 
+      position: fixed; 
+      bottom: 100px; 
+      left: 50%; 
+      transform: translate(-50%, 20px); 
+      background: var(--text); 
+      color: var(--bg); 
+      padding: 12px 24px; 
+      border-radius: 99px; 
+      font-weight: 800; 
+      opacity: 0; 
+      transition: 0.3s ease; 
+      z-index: 1000; 
+      font-size: 0.95rem; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .toast.show { 
+      opacity: 1; 
+      transform: translate(-50%, 0); 
+    }
+
+    /* =========================================
+       ESCRITORIO (PC)
+       ========================================= */
+    @media (min-width: 768px) {
+      body { 
+        padding-bottom: 0; 
+      }
+      .nav-menu { 
+        position: static; 
+        width: auto; 
+        border: none; 
+        padding: 0; 
+        background: transparent; 
+        box-shadow: none;
+      }
+      .nav-btn { 
+        flex-direction: row; 
+        font-size: 0.9rem; 
+        padding: 10px 16px; 
+        gap: 8px;
+      }
+      .toast { 
+        bottom: 30px; 
+        left: auto; 
+        right: 30px; 
+        transform: translateY(20px); 
+      }
+      .toast.show { 
+        transform: translateY(0); 
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- IMPORTAR LA BASE DE DATOS EXTERNA -->
+<script src="db.js"></script>
+
+<header>
+  <div class="container header-content">
+    <button class="brand" onclick="go('inicio')">
+      <span class="logo">🥑</span>
+      <div>
+        <b>AyuKcal</b>
+      </div>
+    </button>
+    
+    <div class="nav-menu">
+      <button class="nav-btn" data-nav="inicio" onclick="go('inicio')">
+        <i>🌿</i><span>Inicio</span>
+      </button>
+      <button class="nav-btn" data-nav="hoy" onclick="go('hoy')">
+        <i>📊</i><span>Diario</span>
+      </button>
+      <button class="nav-btn" data-nav="comidas" onclick="go('comidas')">
+        <i>🥗</i><span>Comida</span>
+      </button>
+      <button class="nav-btn" data-nav="ayuno" onclick="go('ayuno')">
+        <i>⏳</i><span>Ayuno</span>
+      </button>
+      <button class="nav-btn" data-nav="peso" onclick="go('peso')">
+        <i>⚖️</i><span>Peso</span>
+      </button>
+      <button class="nav-btn" data-nav="perfil" onclick="go('perfil')">
+        <i>👤</i><span>Perfil</span>
+      </button>
+    </div>
+    
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+  </div>
+</header>
+
+<main>
+  
+  <!-- =========================================
+       VISTA: INICIO
+       ========================================= -->
+  <section id="inicio" class="view active container">
+    <div class="section-header">
+      <h1>Tu cuerpo,<br>tus reglas.</h1>
+      <p class="muted">Controla calorías, ayuno y peso. Todo guardado de forma segura en tu dispositivo.</p>
+    </div>
+
+    <div class="panel">
+      <h2>🌞 Resumen de Hoy</h2>
+      <div class="grid four">
+        <div class="kpi">
+          <span>Consumidas</span>
+          <b id="homeKcal">0</b>
+        </div>
+        <div class="kpi">
+          <span>Ayuno</span>
+          <b id="homeFast">0h</b>
+        </div>
+        <div class="kpi">
+          <span>Peso</span>
+          <b id="homeWeight">--</b>
+        </div>
+        <div class="kpi">
+          <span>Meta Kcal</span>
+          <b id="homeGoal">--</b>
+        </div>
+      </div>
+      <div class="actions" style="justify-content: center; margin-top: 24px;">
+        <button class="btn primary" onclick="go('comidas')">➕ Registrar Comida</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       VISTA: DIARIO (HISTORIAL)
+       ========================================= -->
+  <section id="hoy" class="view container">
+    <div class="section-header">
+      <h1>📊 Diario</h1>
+      <p class="muted">Revisa tu progreso diario y navega por el historial.</p>
+    </div>
+
+    <div style="text-align: center;">
+      <div class="date-picker-wrap">
+        <button onclick="changeDate(-1)">◀</button>
+        <input type="date" id="datePicker" onchange="setDate(this.value)" />
+        <button onclick="changeDate(1)">▶</button>
+      </div>
+    </div>
+    
+    <div id="daily" class="panel">
+      <!-- Inyectado por JS -->
+    </div>
+  </section>
+
+  <!-- =========================================
+       VISTA: COMIDAS Y BUSCADOR
+       ========================================= -->
+  <section id="comidas" class="view container">
+    <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <h1>🥗 Comidas</h1>
+        <p class="muted" id="comidasDateLabel">Agregando a: Hoy</p>
+      </div>
+      <button class="btn danger" style="padding: 10px 16px; font-size: 0.9rem;" onclick="clearCurrentDay()">Vaciar día</button>
+    </div>
+
+    <div class="grid two">
+      <div class="panel">
+        <h2>🔎 Buscar Alimento</h2>
+        <input id="q" class="input" placeholder="Ej. Pollo asado, Aceite, Arepa..." oninput="renderFoods()" style="margin-bottom: 16px;" />
+        <div id="foods" class="list" style="max-height: 550px; overflow-y: auto; padding-right: 8px;">
+          <!-- Inyectado por JS -->
+        </div>
+      </div>
+
+      <div>
+        <div class="panel">
+          <h2>🍽️ Consumido (<span id="consumidoFecha">Hoy</span>)</h2>
+          <div id="todayFoods" class="list">
+            <!-- Inyectado por JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       VISTA: AYUNO Y COACH
+       ========================================= -->
+  <section id="ayuno" class="view container">
+    <div class="section-header">
+      <h1>⏳ Ayuno</h1>
+      <p class="muted">El sistema te avisará cómo romperlo adecuadamente según las horas.</p>
+    </div>
+
+    <div class="panel" style="text-align: center;">
+      <h2>Cronómetro de Ayuno</h2>
+      <div class="timer" id="timer">00:00:00</div>
+      <p id="phase" class="muted" style="font-weight: 700; font-size: 1.1rem;">Sin ayuno activo</p>
+      
+      <div class="actions" style="justify-content: center; margin-top: 24px;">
+        <button class="btn primary" onclick="startFast()">Iniciar Ayuno</button>
+        <button class="btn danger" onclick="stopFast()">Finalizar</button>
+      </div>
+    </div>
+
+    <div class="grid three">
+      <div class="panel kpi">
+        <span>Récord Max</span>
+        <b id="bestFast">0h</b>
+      </div>
+      <div class="panel kpi">
+        <span>Promedio</span>
+        <b id="avgFast">0h</b>
+      </div>
+      <div class="panel kpi">
+        <span>Completados</span>
+        <b id="fastCount">0</b>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       VISTA: PESO Y GRÁFICA
+       ========================================= -->
+  <section id="peso" class="view container">
+    <div class="section-header">
+      <h1>⚖️ Peso</h1>
+      <p class="muted">Registra y observa tu evolución física.</p>
+    </div>
+
+    <div class="grid two">
+      <div class="panel">
+        <form class="form" onsubmit="addWeight(event)" style="display: flex; gap: 12px;">
+          <input id="w" class="input" type="number" min="20" max="300" step="0.1" placeholder="Ej. 75.5" required />
+          <button class="btn primary">Guardar</button>
+        </form>
+        <div id="weights" class="list" style="margin-top: 24px; max-height: 250px; overflow-y: auto;">
+          <!-- Inyectado por JS -->
+        </div>
+      </div>
+      <div class="panel">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       VISTA: PERFIL Y CONFIGURACIÓN
+       ========================================= -->
+  <section id="perfil" class="view container">
+    <div class="section-header">
+      <h1>👤 Perfil</h1>
+      <p class="muted">Ajusta tus metas, datos corporales y sistema.</p>
+    </div>
+
+    <div class="grid two">
+      <form class="panel form" onsubmit="saveProfile(event)">
+        <input id="name" class="input" placeholder="Tu nombre" maxlength="30" />
+        
+        <div class="grid two">
+          <input id="age" class="input" type="number" min="10" placeholder="Edad" required />
+          <input id="height" class="input" type="number" min="100" placeholder="Altura (cm)" required />
+        </div>
+        
+        <input id="weight" class="input" type="number" min="20" step="0.1" placeholder="Peso actual (kg)" required />
+        
+        <label class="muted" style="font-size: 0.9rem; font-weight: 700; margin-bottom: -4px;">Meta Calórica Manual (Opcional)</label>
+        <input id="manualGoal" class="input" type="number" min="500" placeholder="Ej. 1500 (Vacío = Automático)" />
+        
+        <select id="gender" class="input">
+          <option value="male">Hombre</option>
+          <option value="female">Mujer</option>
+        </select>
+        
+        <select id="activity" class="input">
+          <option value="sedentary">Sedentario (Oficina)</option>
+          <option value="light">Actividad Ligera (1-3 días)</option>
+          <option value="moderate">Moderado (3-5 días)</option>
+          <option value="active">Activo (6-7 días)</option>
+          <option value="extreme">Muy activo (Atleta)</option>
+        </select>
+        
+        <select id="goal" class="input">
+          <option value="cut">Perder Grasa (Déficit)</option>
+          <option value="maintain">Mantenimiento</option>
+          <option value="bulk">Ganar Masa (Superávit)</option>
+        </select>
+        
+        <button class="btn primary" style="margin-top: 8px;">Guardar Configuración</button>
+      </form>
+
+      <div>
+        <div class="panel" id="profileBox">
+          <!-- Inyectado por JS -->
+        </div>
+        <div class="panel">
+          <h2>💾 Sistema</h2>
+          <div class="actions">
+            <button class="btn" style="flex: 1;" onclick="exportData()">Exportar .json</button>
+            <label class="btn" style="flex: 1; text-align: center;">
+              Importar
+              <input type="file" accept="application/json" hidden onchange="importData(event)" />
+            </label>
+            <button class="btn danger" style="width: 100%; margin-top: 8px;" onclick="wipe()">Reiniciar Todo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- =========================================
+     MODAL CALCULADORA DE PORCIONES
+     ========================================= -->
+<div id="portionModal" class="modal-overlay">
+  <div class="modal">
+    <h2 id="modalFoodName" style="font-size: 1.3rem; margin-bottom: 8px;">Nombre Alimento</h2>
+    <p class="muted" style="font-size: 0.95rem; margin-bottom: 24px;">Indica la cantidad exacta. Calcularemos todos los macros por ti.</p>
+    
+    <form class="form" onsubmit="confirmAddFood(event)">
+      <input type="hidden" id="modalFoodId" />
+      
+      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+        <input id="modalGrams" class="input" type="number" min="1" step="0.1" required style="font-size: 1.3rem; text-align: center; font-weight: 900;" />
+        <span style="font-weight: 900; color: var(--muted); font-size: 1.1rem; min-width: 50px;">g / ml</span>
+      </div>
+      
+      <div class="actions">
+        <button type="button" class="btn" style="flex: 1;" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn primary" style="flex: 1;">Agregar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; <span id="year"></span> Avila Mora Soluciones</p>
+  </div>
+</footer>
+
+<script>
+// =========================================
+// UTILIDADES Y SEGURIDAD
+// =========================================
+const sanitize = (str) => {
+  if(!str) return "";
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;', "/": '&#x2F;' };
+  return str.replace(/[&<>"'/]/ig, (match) => map[match]);
+};
+
+const getLocalISODate = (d = new Date()) => {
+  const tzOffset = d.getTimezoneOffset() * 60000;
+  return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
+};
+
+const KEY = "ayukcal_v7";
+const $ = id => document.getElementById(id);
+let viewDate = getLocalISODate();
+
+// =========================================
+// INICIALIZACIÓN
+// =========================================
+document.addEventListener("DOMContentLoaded", () => {
+  $("year").textContent = new Date().getFullYear();
+  initTheme(); 
+  $("datePicker").value = viewDate; 
+  go("inicio");
+  
+  if(typeof SEED_DB === 'undefined') {
+    alert("⚠️ Error: No se encontró el archivo db.js. Asegúrate de que esté en la misma carpeta que este archivo HTML.");
+  }
+});
+
+// =========================================
+// ESTADO Y ALMACENAMIENTO (LOCALSTORAGE)
+// =========================================
+function state() {
+  try {
+    let s = JSON.parse(localStorage.getItem(KEY));
+    if (!s) {
+      s = { profile: null, foods: [], db: [], weights: [], fast: null, fasts: [] };
+    }
+    
+    // Validar si la base de datos externa cargó y alimentar el estado local si está vacío
+    if ((!s.db || s.db.length === 0) && typeof SEED_DB !== 'undefined') {
+      s.db = SEED_DB.map((x, i) => ({
+        id: "db_" + i, 
+        name: x[0], 
+        cat: x[1], 
+        brand: x[2], 
+        serv: x[3], 
+        kcal: x[4], 
+        p: x[5], 
+        c: x[6], 
+        f: x[7]
+      }));
+    }
+    return s;
+  } catch (e) { 
+    return { profile: null, foods: [], db: [], weights: [], fast: null, fasts: [] }; 
+  }
+}
+
+function save(s) { 
+  localStorage.setItem(KEY, JSON.stringify(s)); 
+  refresh(); 
+}
+
+function toast(msg) {
+  const oldToast = document.querySelector(".toast"); 
+  if(oldToast) oldToast.remove();
+  
+  const el = document.createElement("div"); 
+  el.className = "toast"; 
+  el.textContent = msg; 
+  document.body.appendChild(el);
+  
+  setTimeout(() => el.classList.add("show"), 10); 
+  
+  setTimeout(() => { 
+    el.classList.remove("show"); 
+    setTimeout(() => el.remove(), 300); 
+  }, 3000);
+}
+
+// =========================================
+// NAVEGACIÓN Y TEMAS
+// =========================================
+function go(id) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active")); 
+  $(id).classList.add("active");
+  
+  document.querySelectorAll(".nav-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.nav === id);
+  });
+  
+  refresh(); 
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function toggleTheme() {
+  const html = document.documentElement; 
+  const currentTheme = html.getAttribute("data-theme");
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  
+  html.setAttribute("data-theme", newTheme); 
+  $("themeBtn").textContent = newTheme === "dark" ? "🌙" : "☀️";
+  $("themeColorMeta").setAttribute("content", newTheme === "dark" ? "#0f1714" : "#f4f9f5");
+  
+  localStorage.setItem("ayukcal_theme", newTheme); 
+  draw();
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem("ayukcal_theme") || "dark"; 
+  document.documentElement.setAttribute("data-theme", savedTheme);
+  
+  $("themeBtn").textContent = savedTheme === "dark" ? "🌙" : "☀️"; 
+  $("themeColorMeta").setAttribute("content", savedTheme === "dark" ? "#0f1714" : "#f4f9f5");
+}
+
+// =========================================
+// GESTIÓN DE FECHAS (HISTORIAL)
+// =========================================
+function setDate(val) { 
+  if(!val) return; 
+  viewDate = val; 
+  $("consumidoFecha").textContent = viewDate === getLocalISODate() ? "Hoy" : viewDate; 
+  refresh(); 
+}
+
+function changeDate(days) { 
+  const d = new Date(viewDate + 'T12:00:00'); 
+  d.setDate(d.getDate() + days); 
+  viewDate = getLocalISODate(d); 
+  $("datePicker").value = viewDate; 
+  setDate(viewDate); 
+}
+
+// =========================================
+// CÁLCULOS METABÓLICOS Y MACROS
+// =========================================
+function tdee(p) {
+  const bmr = p.gender === "male" 
+    ? (10 * p.weight) + (6.25 * p.height) - (5 * p.age) + 5 
+    : (10 * p.weight) + (6.25 * p.height) - (5 * p.age) - 161;
+    
+  const multiplier = { 
+    sedentary: 1.2, 
+    light: 1.375, 
+    moderate: 1.55, 
+    active: 1.725, 
+    extreme: 1.9 
+  }[p.activity] || 1.55;
+  
+  return Math.round(bmr * multiplier);
+}
+
+function macros(p) {
+  let kcal = 0;
+  
+  if (p.manualGoal && p.manualGoal >= 500) {
+    kcal = p.manualGoal; // Prevalencia de la meta manual
+  } else {
+    kcal = p.goal === "bulk" ? tdee(p) + 300 : p.goal === "maintain" ? tdee(p) : Math.max(1200, tdee(p) - 500);
+  }
+
+  const protein = Math.round(p.weight * (p.goal === "cut" ? 2.0 : 1.8)); 
+  const fat = Math.round((kcal * 0.25) / 9);
+  const carbs = Math.max(0, Math.round((kcal - protein * 4 - fat * 9) / 4));
+  
+  return { kcal, protein, fat, carbs };
+}
+
+function totalsForDate(dStr) { 
+  return state().foods.filter(x => x.date === dStr).reduce((acc, x) => { 
+    acc.kcal += x.kcal; 
+    acc.p += x.p; 
+    acc.c += x.c; 
+    acc.f += x.f; 
+    return acc; 
+  }, { kcal: 0, p: 0, c: 0, f: 0 }); 
+}
+
+// =========================================
+// RENDERIZADO DE COMPONENTES
+// =========================================
+function renderProfile() {
+  const p = state().profile;
+  
+  if (p) {
+    ["name", "age", "height", "weight", "gender", "activity", "goal", "manualGoal"].forEach(k => { 
+      if($(k)) $(k).value = p[k] || ""; 
+    });
+    
+    const m = macros(p);
+    
+    $("profileBox").innerHTML = `
+      <h2>👋 Hola, ${sanitize(p.name) || "Guerrero"}</h2>
+      <div class="grid two" style="margin-top: 16px;">
+        <div class="kpi">
+          <span>Meta Diaria</span>
+          <b style="color: var(--primary);">${m.kcal}</b> kcal
+        </div>
+        <div class="kpi">
+          <span>Proteína</span>
+          <b>${m.protein}g</b>
+        </div>
+        <div class="kpi">
+          <span>Carbohidratos</span>
+          <b>${m.carbs}g</b>
+        </div>
+        <div class="kpi">
+          <span>Grasas</span>
+          <b>${m.fat}g</b>
+        </div>
+      </div>
+      ${p.manualGoal ? `<p class="muted" style="text-align: center; margin-top: 16px; font-size: 0.85rem;">⚠️ Usando Meta Manual: ${p.manualGoal} kcal.</p>` : ''}
+    `;
+  } else {
+    $("profileBox").innerHTML = `<p class="muted">Calcula tu perfil para desbloquear metas automáticas.</p>`;
+  }
+}
+
+function renderDaily() {
+  const p = state().profile;
+  const t = totalsForDate(viewDate);
+  const m = p ? macros(p) : { kcal: 2000, protein: 120, carbs: 220, fat: 60 };
+  
+  const pct = Math.min(100, Math.round((t.kcal / m.kcal) * 100)) || 0;
+  const barColor = t.kcal > m.kcal ? "var(--danger)" : "var(--primary)";
+  const boxBorderColor = t.kcal > m.kcal ? "var(--danger-bg)" : "var(--border)";
+  
+  $("daily").innerHTML = `
+    <div class="grid four">
+      <div class="kpi" style="border: 2px solid ${boxBorderColor};">
+        <span>Calorías</span>
+        <b>${Math.round(t.kcal)}</b>
+        <div class="progress">
+          <i style="width: ${pct}%; background: ${barColor};"></i>
+        </div>
+        <small class="muted" style="display: block; margin-top: 10px;">Meta: ${m.kcal}</small>
+      </div>
+      <div class="kpi">
+        <span>Proteína</span>
+        <b>${Math.round(t.p)}g</b>
+        <small class="muted">Meta: ${m.protein}g</small>
+      </div>
+      <div class="kpi">
+        <span>Carbs</span>
+        <b>${Math.round(t.c)}g</b>
+        <small class="muted">Meta: ${m.carbs}g</small>
+      </div>
+      <div class="kpi">
+        <span>Grasas</span>
+        <b>${Math.round(t.f)}g</b>
+        <small class="muted">Meta: ${m.fat}g</small>
+      </div>
+    </div>
+  `;
+}
+
+function renderFoods() {
+  const q = sanitize($("q").value.toLowerCase());
+  const db = state().db;
+  
+  const filteredItems = db.filter(f => `${f.name} ${f.brand}`.toLowerCase().includes(q)).slice(0, 30);
+  
+  $("foods").innerHTML = filteredItems.map(f => `
+    <div class="row">
+      <div>
+        <strong style="font-size: 1rem;">${f.name}</strong><br>
+        <span class="badge">${f.brand}</span> 
+        <span class="badge">Base: ${f.serv}g</span>
+        <div class="row-detail">P: ${f.p}g · C: ${f.c}g · G: ${f.f}g (${f.kcal} kcal)</div>
+      </div>
+      <button class="btn primary icon" onclick="openModal('${f.id}')">➕</button>
+    </div>
+  `).join("") || "<p class='muted'>No se encontró en la base de datos.</p>";
+  
+  renderToday();
+}
+
+function renderToday() {
+  const todayItems = state().foods.filter(x => x.date === viewDate);
+  
+  $("todayFoods").innerHTML = todayItems.map(x => `
+    <div class="row">
+      <div>
+        <b style="font-size: 1rem;">${x.name}</b> 
+        <span class="badge">${x.serv}g</span><br>
+        <div class="row-detail">
+          ${x.kcal} kcal | P: ${x.p}g · C: ${x.c}g · G: ${x.f}g
+        </div>
+      </div>
+      <button class="btn danger" style="padding: 8px 14px; font-size: 0.85rem;" onclick="removeFood('${x.uuid}')">Quitar</button>
+    </div>
+  `).join("") || "<p class='muted'>No has registrado comidas en este día.</p>";
+}
+
+// =========================================
+// MODAL DE PORCIONES Y REGISTRO DE COMIDA
+// =========================================
+function openModal(id) {
+  const f = state().db.find(x => x.id === id); 
+  if(!f) return;
+  
+  $("modalFoodId").value = f.id; 
+  $("modalFoodName").textContent = f.name; 
+  $("modalGrams").value = f.serv;
+  
+  $("portionModal").classList.add("active");
+}
+
+function closeModal() { 
+  $("portionModal").classList.remove("active"); 
+}
+
+function confirmAddFood(e) {
+  e.preventDefault();
+  const s = state();
+  const id = $("modalFoodId").value;
+  const inputGrams = +$("modalGrams").value;
+  
+  const f = s.db.find(x => x.id === id); 
+  if(!f || inputGrams <= 0) return;
+  
+  // REGLA DE TRES MATEMÁTICA
+  const ratio = inputGrams / f.serv; 
+  
+  s.foods.unshift({ 
+    ...f, 
+    serv: inputGrams, 
+    kcal: Math.round(f.kcal * ratio), 
+    p: +(f.p * ratio).toFixed(1), 
+    c: +(f.c * ratio).toFixed(1), 
+    f: +(f.f * ratio).toFixed(1), 
+    date: viewDate, 
+    time: Date.now(), 
+    uuid: Date.now().toString() + Math.random() 
+  });
+  
+  save(s); 
+  closeModal(); 
+  toast(`Añadido: ${inputGrams}g 🥑`);
+}
+
+function removeFood(uuid) { 
+  const s = state(); 
+  s.foods = s.foods.filter(x => x.uuid !== uuid); 
+  save(s); 
+}
+
+function clearCurrentDay() { 
+  if (confirm(`🚨 ¿Estás seguro de vaciar todos los registros del día ${viewDate}?`)) { 
+    const s = state(); 
+    s.foods = s.foods.filter(x => x.date !== viewDate); 
+    save(s); 
+  } 
+}
+
+// =========================================
+// PERFIL Y CONFIGURACIÓN
+// =========================================
+function saveProfile(e) {
+  e.preventDefault(); 
+  const s = state();
+  
+  s.profile = { 
+    name: sanitize($("name").value), 
+    age: Math.max(10, +$("age").value), 
+    height: Math.max(50, +$("height").value), 
+    weight: Math.max(20, +$("weight").value), 
+    gender: $("gender").value, 
+    activity: $("activity").value, 
+    goal: $("goal").value, 
+    manualGoal: $("manualGoal").value ? +$("manualGoal").value : null 
+  };
+  
+  save(s); 
+  toast("Perfil actualizado ✔️");
+}
+
+// =========================================
+// COACHING DE AYUNO
+// =========================================
+function startFast() { 
+  const s = state(); 
+  s.fast = { start: Date.now() }; 
+  save(s); 
+  toast("Ayuno iniciado ⏳"); 
+}
+
+function stopFast() {
+  const s = state(); 
+  if (!s.fast) return toast("No hay ningún ayuno activo.");
+  
+  const hours = (Date.now() - s.fast.start) / 36e5;
+  let msg = "";
+  
+  if (hours < 16) {
+    msg = `Llevas ${hours.toFixed(1)}h. Es un ayuno normal. Puedes romperlo con tus macros regulares sin problema.\n\n¿Finalizar ayuno?`;
+  } else if (hours < 20) {
+    msg = `Llevas ${hours.toFixed(1)}h. Para cuidar tu digestión, intenta comer la proteína y grasas primero, dejando los carbohidratos para el final.\n\n¿Finalizar ayuno?`;
+  } else {
+    msg = `🚨 ¡AYUNO PROFUNDO DE ${hours.toFixed(1)}h!\n\nTu cuerpo es extremadamente sensible a la insulina en este momento. Rompe el ayuno SOLO CON PROTEÍNA MAGRA (pollo, atún o caldo). Evita los carbohidratos por los próximos 45 minutos.\n\n¿Finalizar ayuno?`;
+  }
+  
+  if(!confirm(msg)) return;
+  
+  s.fasts.unshift({ hours: +hours.toFixed(4), date: new Date().toISOString() }); 
+  s.fast = null; 
+  save(s); 
+  toast(`¡Ayuno de ${hours.toFixed(1)}h completado! 🏆`);
+}
+
+function renderFast() {
+  const s = state();
+  
+  if (s.fast) {
+    const timeInSeconds = Math.floor((Date.now() - s.fast.start) / 1000);
+    const h = Math.floor(timeInSeconds / 3600);
+    const m = Math.floor((timeInSeconds % 3600) / 60);
+    const sec = timeInSeconds % 60;
+    
+    $("timer").textContent = [h, m, sec].map(x => String(x).padStart(2, "0")).join(":");
+    $("phase").textContent = "🔥 En curso..."; 
+    $("phase").style.color = "var(--primary)";
+  } else { 
+    $("timer").textContent = "00:00:00"; 
+    $("phase").textContent = "Inactivo"; 
+    $("phase").style.color = "var(--muted)"; 
+  }
+  
+  $("bestFast").textContent = (s.fasts.length ? Math.max(...s.fasts.map(x => x.hours)) : 0).toFixed(1) + "h";
+  $("avgFast").textContent = (s.fasts.length ? s.fasts.reduce((a, b) => a + b.hours, 0) / s.fasts.length : 0).toFixed(1) + "h";
+  $("fastCount").textContent = s.fasts.length;
+}
+
+// =========================================
+// PESO Y GRÁFICAS
+// =========================================
+function addWeight(e) { 
+  e.preventDefault(); 
+  const s = state();
+  const val = Math.max(20, +$("w").value); 
+  
+  if(val) { 
+    s.weights.unshift({ w: val, date: new Date().toISOString() }); 
+    if (s.profile) s.profile.weight = val; 
+    $("w").value = ""; 
+    save(s); 
+    toast("Peso guardado ⚖️"); 
+  } 
+}
+
+function renderWeights() { 
+  const s = state();
+  $("weights").innerHTML = s.weights.length 
+    ? s.weights.slice(0, 10).map(x => `
+        <div class="row">
+          <b style="font-size: 1.1rem;">${x.w} kg</b>
+          <small class="muted">${new Date(x.date).toLocaleDateString()}</small>
+        </div>
+      `).join("") 
+    : "<p class='muted'>Sin registros. Agrega tu primer peso.</p>"; 
+    
+  draw(); 
+}
+
+function draw() {
+  const canvas = $("chart"); 
+  if(!canvas) return; 
+  
+  const ctx = canvas.getContext("2d");
+  const arr = state().weights.slice(0, 15).reverse();
+  
+  canvas.width = canvas.parentElement.clientWidth - 48; 
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  if (arr.length < 2) {
+    ctx.fillStyle = "var(--muted)";
+    ctx.font = "14px Nunito";
+    ctx.fillText("Agrega al menos 2 pesos para ver la gráfica", 10, canvas.height / 2);
+    return;
+  }
+  
+  const vals = arr.map(x => x.w);
+  const min = Math.min(...vals) - 1;
+  const max = Math.max(...vals) + 1;
+  
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  ctx.strokeStyle = isDark ? "#4ade80" : "#2d6a4f"; 
+  ctx.lineWidth = 4; 
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  
+  ctx.beginPath();
+  
+  arr.forEach((x, i) => { 
+    const px = 20 + i * ((canvas.width - 40) / (arr.length - 1));
+    const py = canvas.height - 20 - ((x.w - min) / (max - min)) * (canvas.height - 40);
+    
+    if(i === 0) {
+      ctx.moveTo(px, py);
+    } else {
+      ctx.lineTo(px, py);
+    }
+  }); 
+  
+  ctx.stroke();
+}
+
+// =========================================
+// IMPORTAR Y EXPORTAR DATA
+// =========================================
+function exportData() { 
+  const a = document.createElement("a"); 
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(state(), null, 2)], { type: "application/json" })); 
+  a.download = `ayukcal-backup-${getLocalISODate()}.json`; 
+  a.click(); 
+}
+
+function importData(e) { 
+  const reader = new FileReader(); 
+  reader.onload = () => { 
+    try { 
+      JSON.parse(reader.result); 
+      localStorage.setItem(KEY, reader.result); 
+      toast("Datos restaurados correctamente."); 
+      setTimeout(() => location.reload(), 1000);
+    } catch(err) { 
+      alert("⚠️ El archivo seleccionado no es válido o está corrupto."); 
+    } 
+  }; 
+  if(e.target.files[0]) reader.readAsText(e.target.files[0]); 
+}
+
+function wipe() { 
+  if (confirm("🚨 ¿ESTÁS SEGURO DE BORRAR TODO? Esta acción es irreversible y perderás tu progreso y base de datos.")) { 
+    localStorage.removeItem(KEY); 
+    location.reload(); 
+  } 
+}
+
+// =========================================
+// CICLO PRINCIPAL
+// =========================================
+function refresh() {
+  const s = state();
+  const t = totalsForDate(viewDate);
+  
+  $("homeKcal").textContent = Math.round(t.kcal); 
+  $("homeWeight").textContent = s.profile?.weight ? s.profile.weight + " kg" : "--"; 
+  $("homeGoal").textContent = s.profile ? macros(s.profile).kcal : "--";
+  
+  renderProfile(); 
+  renderDaily(); 
+  renderFoods(); 
+  renderFast(); 
+  renderWeights();
+}
+
+// Loop del reloj de ayuno
+setInterval(() => { 
+  if (state().fast) renderFast(); 
+}, 1000);
+
+</script>
+</body>
+</html>
