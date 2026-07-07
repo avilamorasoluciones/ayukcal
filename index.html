@@ -2,11 +2,11 @@
 <html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   
   <title>AyuKcal | Avila Mora Soluciones</title>
   
-  <meta name="description" content="AyuKcal te ayuda a llevar tus comidas, calorías, peso y ayuno de forma simple, segura y privada." />
+  <meta name="description" content="AyuKcal te ayuda a llevar tus comidas, calorías, peso, ejercicio y ayuno de forma simple." />
   <meta name="theme-color" content="#0f1714" id="themeColorMeta" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,8 +26,12 @@
       --primary: #2d6a4f; 
       --primary-hover: #1b4332;
       --accent: #10b981; 
-      --danger: #ef4444; 
+      --danger: #ef4444;
+      --warning: #f59e0b;
       --danger-bg: #fee2e2;
+      --water: #3b82f6;
+      --water-bg: #dbeafe;
+      --water-fill: #93c5fd;
       --shadow: 0 10px 40px rgba(45, 106, 79, 0.08); 
       --radius: 24px;
     }
@@ -43,6 +47,9 @@
       --accent: #a3e635; 
       --danger: #f87171; 
       --danger-bg: rgba(239, 68, 68, 0.15);
+      --water: #60a5fa;
+      --water-bg: rgba(59, 130, 246, 0.15);
+      --water-fill: rgba(59, 130, 246, 0.35);
       --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     }
 
@@ -78,8 +85,8 @@
 
     a { 
       color: var(--primary); 
-      text-decoration: none; 
-      font-weight: 700; 
+      text-decoration: underline; 
+      font-weight: 800; 
     }
 
     .container { 
@@ -100,11 +107,11 @@
       transition: 0.3s ease;
     }
 
-    .header-content { 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      height: 70px; 
+    .header-content {
+      display:flex;
+      align-items:center;
+      height:70px;
+      gap:12px;
     }
 
     .brand { 
@@ -115,434 +122,227 @@
       text-align: left;
     }
 
-    .logo { 
-      font-size: 1.8rem; 
-    }
+    .logo { font-size: 1.8rem; }
+    .brand b { font-size: 1.3rem; font-weight: 900; line-height: 1; display: block; }
 
-    .brand b { 
-      font-size: 1.3rem; 
-      font-weight: 900; 
-      line-height: 1; 
-      display: block; 
-    }
-
-    .brand small { 
-      color: var(--muted); 
-      font-weight: 600; 
-      font-size: 0.75rem; 
-      margin-top: 4px;
-      display: block;
+    /* VALIDACIÓN VISUAL DEL NOMBRE */
+    .user-badge {
+      display:none;
+      background:var(--primary);
+      color:var(--bg);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:.8rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      flex-shrink:0;
     }
 
     .theme-toggle { 
-      width: 42px; 
-      height: 42px; 
-      border-radius: 50%; 
-      background: var(--bg); 
-      color: var(--text); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      border: 1px solid var(--border); 
-      font-size: 1.2rem;
-      transition: 0.2s ease;
+      width: 42px; height: 42px; border-radius: 50%; background: var(--bg); 
+      color: var(--text); display: flex; align-items: center; justify-content: center; 
+      border: 1px solid var(--border); font-size: 1.2rem; transition: 0.2s ease; margin-left: auto;
     }
 
     /* MENÚ FLOTANTE MÓVIL */
     .nav-menu { 
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      width: 100%; 
-      background: var(--surface); 
-      border-top: 1px solid var(--border); 
-      display: flex; 
-      justify-content: space-around; 
-      padding: 10px 5px 20px; 
-      z-index: 100; 
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+      position: fixed; bottom: 0; left: 0; width: 100%; background: var(--surface); 
+      border-top: 1px solid var(--border); display: flex; justify-content: space-around; 
+      padding: 10px 5px 20px; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
     }
-
     .nav-btn { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      gap: 4px; 
-      color: var(--muted); 
-      font-weight: 700; 
-      font-size: 0.75rem; 
-      padding: 8px 12px; 
-      border-radius: 16px; 
-      transition: 0.2s ease;
+      display: flex; flex-direction: column; align-items: center; gap: 4px; 
+      color: var(--muted); font-weight: 700; font-size: 0.75rem; padding: 8px 12px; 
+      border-radius: 16px; transition: 0.2s ease;
     }
-
-    .nav-btn i { 
-      font-size: 1.3rem; 
-      font-style: normal; 
-    }
-
-    .nav-btn.active { 
-      color: var(--surface); 
-      background: var(--primary); 
-    }
+    .nav-btn i { font-size: 1.3rem; font-style: normal; }
+    .nav-btn.active { color: var(--surface); background: var(--primary); }
 
     /* =========================================
        DISEÑO GENERAL (PANELES Y TEXTOS)
        ========================================= */
-    main { 
-      padding-top: 30px; 
-    }
-
-    .view { 
-      display: none; 
-      animation: fadeIn 0.3s ease; 
-    }
-
-    .view.active { 
-      display: block; 
-    }
-
-    @keyframes fadeIn { 
-      from { opacity: 0; transform: translateY(10px); } 
-      to { opacity: 1; transform: translateY(0); } 
-    }
+    main { padding-top: 30px; }
+    .view { display: none; animation: fadeIn 0.3s ease; }
+    .view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     .panel { 
-      background: var(--surface); 
-      border-radius: var(--radius); 
-      padding: 28px; 
-      margin-bottom: 24px; 
-      border: 1px solid var(--border); 
-      box-shadow: var(--shadow);
-      transition: 0.3s ease; 
+      background: var(--surface); border-radius: var(--radius); padding: 28px; 
+      margin-bottom: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: 0.3s ease; 
     }
-
-    .section-header { 
-      margin-bottom: 28px; 
-    }
-
-    h1 { 
-      font-size: clamp(2rem, 5vw, 2.8rem); 
-      font-weight: 900; 
-      line-height: 1.15; 
-      margin-bottom: 10px; 
-    }
-
-    h1 span { 
-      color: var(--primary); 
-    }
-
-    h2 { 
-      font-size: 1.3rem; 
-      margin-bottom: 20px; 
-      font-weight: 800; 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between;
-    }
-
-    .muted { 
-      color: var(--muted); 
-    }
+    .section-header { margin-bottom: 28px; }
+    h1 { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 900; line-height: 1.15; margin-bottom: 10px; }
+    h1 span { color: var(--primary); }
+    h2 { font-size: 1.3rem; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; }
+    .muted { color: var(--muted); }
 
     /* =========================================
        BOTONES Y CONTROLES
        ========================================= */
-    .actions { 
-      display: flex; 
-      gap: 12px; 
-      flex-wrap: wrap; 
-      margin-top: 20px; 
-    }
-
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
     .btn { 
-      background: var(--bg); 
-      color: var(--text); 
-      padding: 14px 24px; 
-      border-radius: 99px; 
-      font-weight: 800; 
-      border: 1px solid var(--border); 
-      text-align: center; 
-      font-size: 1rem; 
-      transition: 0.2s ease;
+      background: var(--bg); color: var(--text); padding: 14px 24px; border-radius: 99px; 
+      font-weight: 800; border: 1px solid var(--border); text-align: center; font-size: 1rem; transition: 0.2s ease;
     }
-
-    .btn:active { 
-      transform: scale(0.96); 
-    }
-
-    .btn.primary { 
-      background: var(--primary); 
-      color: var(--surface); 
-      border-color: transparent; 
-    }
-
-    .btn.danger { 
-      background: var(--danger-bg); 
-      color: var(--danger); 
-      border-color: transparent; 
-    }
-
-    .btn.icon { 
-      padding: 10px 16px; 
-      font-size: 1.2rem; 
-      border-radius: 16px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-    }
+    .btn:active { transform: scale(0.96); }
+    .btn.primary { background: var(--primary); color: var(--surface); border-color: transparent; }
+    .btn.danger { background: var(--danger-bg); color: var(--danger); border-color: transparent; }
+    .btn.icon { padding: 10px 16px; font-size: 1.2rem; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
 
     .input, select { 
-      width: 100%; 
-      padding: 16px; 
-      border-radius: 16px; 
-      border: 2px solid var(--border); 
-      background: var(--bg); 
-      color: var(--text); 
-      font-weight: 600; 
-      transition: 0.2s ease;
+      width: 100%; padding: 16px; border-radius: 16px; border: 2px solid var(--border); 
+      background: var(--bg); color: var(--text); font-weight: 600; transition: 0.2s ease;
     }
-
-    .input:focus, select:focus { 
-      border-color: var(--primary); 
-    }
+    .input:focus, select:focus { border-color: var(--primary); }
 
     /* =========================================
        GRILLAS Y TARJETAS (KPI)
        ========================================= */
-    .grid { 
-      display: grid; 
-      gap: 16px; 
-    }
-
+    .grid { display: grid; gap: 16px; }
     .two { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .three { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
     .four { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
 
     .kpi { 
-      background: var(--bg); 
-      padding: 20px; 
-      border-radius: 20px; 
-      text-align: center; 
-      border: 1px solid var(--border); 
+      background: var(--bg); padding: 20px; border-radius: 20px; 
+      text-align: center; border: 1px solid var(--border); 
     }
+    .kpi span { display: block; color: var(--muted); font-weight: 700; margin-bottom: 8px; font-size: 0.85rem; }
+    .kpi b { font-size: 1.8rem; font-weight: 900; color: var(--text); line-height: 1; }
 
-    .kpi span { 
-      display: block; 
-      color: var(--muted); 
-      font-weight: 700; 
-      margin-bottom: 8px; 
-      font-size: 0.85rem; 
+    .progress { height: 8px; background: var(--border); border-radius: 99px; margin-top: 14px; overflow: hidden; }
+    .progress i { display: block; height: 100%; transition: width 0.4s ease; }
+
+    /* ANIMACIONES AGUA Y EJERCICIO */
+    .water-tank {
+      position: relative; overflow: hidden; background: var(--bg); border: 1px solid var(--water-bg);
+      border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 15px;
     }
-
-    .kpi b { 
-      font-size: 1.8rem; 
-      font-weight: 900; 
-      color: var(--text); 
-      line-height: 1; 
+    .water-fill-level {
+      position: absolute; bottom: 0; left: 0; width: 100%; background: var(--water-fill);
+      transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1;
     }
+    .water-content { position: relative; z-index: 2; }
 
-    .progress { 
-      height: 8px; 
-      background: var(--border); 
-      border-radius: 99px; 
-      margin-top: 14px; 
-      overflow: hidden; 
+    .runner-track {
+      height: 6px; background: var(--border); border-radius: 99px; position: relative; margin: 30px 0 15px;
     }
-
-    .progress i { 
-      display: block; 
-      height: 100%; 
-      transition: width 0.4s ease; 
+    .runner-icon {
+      position: absolute; top: -16px; font-size: 1.6rem; transform: translateX(-50%);
+      transition: left 1s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* =========================================
-       LISTAS DE COMIDA
+       LISTAS DE COMIDA / EJERCICIO / AGUA
        ========================================= */
-    .form { 
-      display: grid; 
-      gap: 14px; 
-    }
-
-    .list { 
-      display: grid; 
-      gap: 12px; 
-      margin-top: 16px; 
-    }
-
+    .form { display: grid; gap: 14px; }
+    .list { display: grid; gap: 12px; margin-top: 16px; }
     .row { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      padding: 16px 20px; 
-      border-radius: 18px; 
-      background: var(--bg); 
-      border: 1px solid var(--border); 
-      gap: 12px; 
+      display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; 
+      border-radius: 18px; background: var(--bg); border: 1px solid var(--border); gap: 12px; 
     }
-
-    .row-detail {
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-weight: 700;
-      margin-top: 6px;
-    }
-
+    .row-detail { font-size: 0.8rem; color: var(--muted); font-weight: 700; margin-top: 6px; }
     .badge { 
-      background: var(--border); 
-      padding: 4px 8px; 
-      border-radius: 8px; 
-      font-size: 0.75rem;
-      font-weight: 700;
-      display: inline-block;
-      margin-right: 4px;
-      margin-top: 4px;
+      background: var(--border); padding: 4px 8px; border-radius: 8px; 
+      font-size: 0.75rem; font-weight: 700; display: inline-block; margin-right: 4px; margin-top: 4px;
     }
 
     /* =========================================
        COMPONENTES ESPECÍFICOS
        ========================================= */
     .date-picker-wrap { 
-      display: inline-flex; 
-      align-items: center; 
-      background: var(--surface); 
-      border: 2px solid var(--border); 
-      border-radius: 99px; 
-      padding: 6px; 
-      margin-bottom: 24px; 
+      display: inline-flex; align-items: center; background: var(--surface); 
+      border: 2px solid var(--border); border-radius: 99px; padding: 6px; margin-bottom: 24px; 
     }
-
-    .date-picker-wrap button { 
-      padding: 8px 16px; 
-      border-radius: 99px; 
-      background: var(--bg); 
-      font-weight: bold; 
-      color: var(--text); 
-    }
-
-    .date-picker-wrap input { 
-      border: none; 
-      background: transparent; 
-      color: var(--text); 
-      font-weight: 800; 
-      padding: 8px 12px; 
-      text-align: center; 
-      outline: none; 
-      font-family: inherit; 
-    }
+    .date-picker-wrap button { padding: 8px 16px; border-radius: 99px; background: var(--bg); font-weight: bold; color: var(--text); }
+    .date-picker-wrap input { border: none; background: transparent; color: var(--text); font-weight: 800; padding: 8px 12px; text-align: center; outline: none; font-family: inherit; }
 
     .timer { 
-      font-size: clamp(3rem, 10vw, 4.5rem); 
-      font-weight: 900; 
-      text-align: center; 
-      color: var(--primary); 
-      margin: 16px 0; 
-      font-variant-numeric: tabular-nums; 
-      letter-spacing: -2px; 
+      font-size: clamp(3rem, 10vw, 4.5rem); font-weight: 900; text-align: center; 
+      color: var(--primary); margin: 16px 0; font-variant-numeric: tabular-nums; letter-spacing: -2px; 
     }
-
-    canvas { 
-      width: 100%; 
-      height: 220px; 
-      border-radius: 16px; 
-      background: var(--bg); 
-      padding: 12px; 
-    }
+    canvas { width: 100%; height: 220px; border-radius: 16px; background: var(--bg); padding: 12px; }
 
     /* =========================================
        MODALES
        ========================================= */
     .modal-overlay { 
-      position: fixed; 
-      top: 0; left: 0; 
-      width: 100%; height: 100%; 
-      background: rgba(0,0,0,0.6); 
-      z-index: 200; 
-      display: none; 
-      align-items: center; 
-      justify-content: center; 
-      backdrop-filter: blur(4px); 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(0,0,0,0.6); z-index: 200; display: none; align-items: center; 
+      justify-content: center; backdrop-filter: blur(4px); 
     }
-
-    .modal-overlay.active { 
-      display: flex; 
-    }
-
+    .modal-overlay.active { display: flex; }
     .modal { 
-      background: var(--surface); 
-      padding: 30px; 
-      border-radius: var(--radius); 
-      width: 90%; 
-      max-width: 420px; 
-      border: 1px solid var(--border); 
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      background: var(--surface); padding: 30px; border-radius: var(--radius); 
+      width: 90%; max-width: 420px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
 
-    .footer { 
-      text-align: center; 
-      padding: 20px 20px 40px; 
-      color: var(--muted); 
-      font-weight: 600; 
-      font-size: 0.9rem; 
-    }
+    .footer { text-align: center; padding: 20px 20px 40px; color: var(--muted); font-weight: 600; font-size: 0.95rem; }
 
-    /* TOAST (Notificaciones) */
+    /* TOAST */
     .toast { 
-      position: fixed; 
-      bottom: 100px; 
-      left: 50%; 
-      transform: translate(-50%, 20px); 
-      background: var(--text); 
-      color: var(--bg); 
-      padding: 12px 24px; 
-      border-radius: 99px; 
-      font-weight: 800; 
-      opacity: 0; 
-      transition: 0.3s ease; 
-      z-index: 1000; 
-      font-size: 0.95rem; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      position: fixed; bottom: 100px; left: 50%; transform: translate(-50%, 20px); 
+      background: var(--text); color: var(--bg); padding: 12px 24px; border-radius: 99px; 
+      font-weight: 800; opacity: 0; transition: 0.3s ease; z-index: 1000; font-size: 0.95rem; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; width: 85%; max-width: 350px;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width:767px) {
+
+      .user-badge{
+        max-width:90px;
+        font-size:.72rem;
+      }
+
     }
 
-    .toast.show { 
-      opacity: 1; 
-      transform: translate(-50%, 0); 
+    @media (min-width:768px) {
+
+      .user-badge{
+        max-width:150px;
+        font-size:.85rem;
+      }
+
     }
 
-    /* =========================================
-       ESCRITORIO (PC)
-       ========================================= */
     @media (min-width: 768px) {
-      body { 
-        padding-bottom: 0; 
+      body { padding-bottom: 0; }
+      .nav-menu { position: static; width: auto; border: none; padding: 0; background: transparent; box-shadow: none; }
+      .nav-btn { flex-direction: row; font-size: 0.9rem; padding: 10px 16px; gap: 8px; }
+      .toast { bottom: 30px; left: auto; right: 30px; transform: translateY(20px); width: auto; max-width: 400px; }
+      .toast.show { transform: translateY(0); }
+
+      .header-content{
+        gap:16px;
       }
-      .nav-menu { 
-        position: static; 
-        width: auto; 
-        border: none; 
-        padding: 0; 
-        background: transparent; 
-        box-shadow: none;
+
+      .nav-menu{
+        margin-left:auto;
+        margin-right:10px;
+        gap:8px;
       }
-      .nav-btn { 
-        flex-direction: row; 
-        font-size: 0.9rem; 
-        padding: 10px 16px; 
-        gap: 8px;
+
+      .nav-btn{
+        padding:12px 18px;
       }
-      .toast { 
-        bottom: 30px; 
-        left: auto; 
-        right: 30px; 
-        transform: translateY(20px); 
+
+      .nav-btn:hover{
+        background:var(--bg);
+        color:var(--primary);
       }
-      .toast.show { 
-        transform: translateY(0); 
+
+      .nav-btn.active{
+        box-shadow:0 4px 16px rgba(0,0,0,.15);
       }
     }
   </style>
 </head>
 <body>
 
+<!-- IMPORTAR LA BASE DE DATOS EXTERNA -->
 <script src="db.js"></script>
 
 <header>
@@ -551,29 +351,19 @@
       <span class="logo">🥑</span>
       <div>
         <b>AyuKcal</b>
-        <small>Avila Mora Soluciones</small>
       </div>
     </button>
+
+    <!-- PLACA DE USUARIO (Validado con truncado ellipsis) -->
+    <div id="userBadge" class="user-badge" title=""></div>
     
     <div class="nav-menu">
-      <button class="nav-btn" data-nav="inicio" onclick="go('inicio')">
-        <i>🌿</i><span>Inicio</span>
-      </button>
-      <button class="nav-btn" data-nav="hoy" onclick="go('hoy')">
-        <i>📊</i><span>Diario</span>
-      </button>
-      <button class="nav-btn" data-nav="comidas" onclick="go('comidas')">
-        <i>🥗</i><span>Comida</span>
-      </button>
-      <button class="nav-btn" data-nav="ayuno" onclick="go('ayuno')">
-        <i>⏳</i><span>Ayuno</span>
-      </button>
-      <button class="nav-btn" data-nav="peso" onclick="go('peso')">
-        <i>⚖️</i><span>Peso</span>
-      </button>
-      <button class="nav-btn" data-nav="perfil" onclick="go('perfil')">
-        <i>👤</i><span>Perfil</span>
-      </button>
+      <button class="nav-btn" data-nav="inicio" onclick="go('inicio')"><i>🌿</i><span>Inicio</span></button>
+      <button class="nav-btn" data-nav="hoy" onclick="go('hoy')"><i>📊</i><span>Diario</span></button>
+      <button class="nav-btn" data-nav="comidas" onclick="go('comidas')"><i>🥗</i><span>Comida</span></button>
+      <button class="nav-btn" data-nav="ayuno" onclick="go('ayuno')"><i>⏳</i><span>Ayuno</span></button>
+      <button class="nav-btn" data-nav="peso" onclick="go('peso')"><i>⚖️</i><span>Peso</span></button>
+      <button class="nav-btn" data-nav="perfil" onclick="go('perfil')"><i>👤</i><span>Perfil</span></button>
     </div>
     
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
@@ -582,42 +372,82 @@
 
 <main>
   
+  <!-- =========================================
+       VISTA: INICIO
+       ========================================= -->
   <section id="inicio" class="view active container">
     <div class="section-header">
       <h1>Tu cuerpo,<br>tus reglas.</h1>
-      <p class="muted">Controla calorías, ayuno y peso. Todo guardado de forma segura en tu dispositivo.</p>
+      <p class="muted">Controla nutrición, hidratación, ayuno y peso. Todo guardado en tu dispositivo.</p>
     </div>
 
+    <!-- PANEL DE RESUMEN DIARIO -->
     <div class="panel">
       <h2>🌞 Resumen de Hoy</h2>
       <div class="grid four">
-        <div class="kpi">
-          <span>Consumidas</span>
-          <b id="homeKcal">0</b>
-        </div>
-        <div class="kpi">
-          <span>Ayuno</span>
-          <b id="homeFast">0h</b>
-        </div>
-        <div class="kpi">
-          <span>Peso</span>
-          <b id="homeWeight">--</b>
-        </div>
-        <div class="kpi">
-          <span>Meta Kcal</span>
-          <b id="homeGoal">--</b>
-        </div>
+        <div class="kpi"><span>Netas Kcal</span><b id="homeKcal">0</b></div>
+        <div class="kpi"><span>Ayuno</span><b id="homeFast">0h</b></div>
+        <div class="kpi"><span>Peso</span><b id="homeWeight">--</b></div>
+        <div class="kpi"><span>Meta Kcal</span><b id="homeGoal">--</b></div>
       </div>
       <div class="actions" style="justify-content: center; margin-top: 24px;">
-        <button class="btn primary" onclick="go('comidas')">➕ Registrar Comida</button>
+        <button class="btn primary" onclick="go('comidas')">➕ Comida</button>
       </div>
+    </div>
+
+    <!-- PANEL RÁPIDO DE HIDRATACIÓN Y EJERCICIO -->
+    <div class="grid two">
+      
+      <!-- AGUA CON ANIMACIÓN DE TANQUE Y CUSTOM INPUT -->
+      <div class="panel" style="border-color: var(--water-bg); padding-bottom: 20px;">
+        <h2>💧 Hidratación</h2>
+        <p class="muted" style="margin-bottom: 12px; font-size: 0.9rem;">Meta: <span id="waterGoalLabel">--</span> ml</p>
+        
+        <div class="water-tank">
+          <div id="waterFill" class="water-fill-level" style="height: 0%;"></div>
+          <div class="water-content">
+            <span style="display: block; color: var(--muted); font-weight: 700; font-size: 0.85rem; margin-bottom: 4px;">Total Hoy</span>
+            <b style="font-size: 2rem; font-weight: 900; color: var(--water); line-height: 1;" id="waterCount">0 ml</b>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+          <button class="btn" style="flex: 1; padding: 10px; font-size: 0.9rem;" onclick="addWater(250)">+250ml</button>
+          <button class="btn" style="flex: 1; padding: 10px; font-size: 0.9rem;" onclick="addWater(500)">+500ml</button>
+        </div>
+        
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input id="customWaterInput" type="number" class="input" placeholder="ml (Ej. 100)" style="padding: 10px 14px;" min="1" max="2000" />
+          <button class="btn primary" style="background: var(--water); padding: 10px 16px;" onclick="addCustomWater()">➕</button>
+        </div>
+      </div>
+
+      <!-- EJERCICIO CON PISTA ANIMADA -->
+      <div class="panel">
+        <h2>🏃 Ejercicio Físico</h2>
+        <p class="muted" style="margin-bottom: 12px; font-size: 0.9rem;">Pista de meta (1000 Kcal base)</p>
+        
+        <div class="runner-track">
+          <div id="runnerIcon" class="runner-icon" style="left: 0%;">🏃</div>
+        </div>
+
+        <div class="kpi" style="margin-top: 15px;">
+          <span>Calorías Quemadas Hoy</span>
+          <b style="color: var(--danger);" id="exerciseKcal">0</b>
+        </div>
+        <button class="btn primary" style="width: 100%; margin-top: 15px;" onclick="openExerciseModal()">➕ Registrar Actividad</button>
+      </div>
+
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: DIARIO (CRUD TOTAL)
+       ========================================= -->
   <section id="hoy" class="view container">
     <div class="section-header">
       <h1>📊 Diario</h1>
-      <p class="muted">Revisa tu progreso diario y navega por el historial.</p>
+      <p class="muted">Revisa, edita o elimina tu progreso del día (Comida, Agua y Ejercicio).</p>
     </div>
 
     <div style="text-align: center;">
@@ -628,68 +458,117 @@
       </div>
     </div>
     
-    <div id="daily" class="panel">
-      </div>
+    <div id="daily" class="panel"></div>
+
+    <div class="panel">
+      <h2>🏃 Ejercicios</h2>
+      <div id="todayExercises" class="list"></div>
+    </div>
+
+    <div class="panel" style="border-color: var(--water-bg);">
+      <h2>💧 Agua Consumida</h2>
+      <div id="todayWater" class="list"></div>
+    </div>
+
+    <div class="panel">
+      <h2>🍽️ Comidas</h2>
+      <div id="todayFoods" class="list"></div>
+      <button class="btn danger" style="width: 100%; margin-top: 20px;" onclick="clearCurrentDay()">Vaciar Comidas del Día</button>
+    </div>
   </section>
 
+  <!-- =========================================
+       VISTA: COMIDAS Y BUSCADOR
+       ========================================= -->
   <section id="comidas" class="view container">
     <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
         <h1>🥗 Comidas</h1>
         <p class="muted" id="comidasDateLabel">Agregando a: Hoy</p>
       </div>
-      <button class="btn danger" style="padding: 10px 16px; font-size: 0.9rem;" onclick="clearCurrentDay()">Vaciar día</button>
+      <button class="btn" style="padding: 10px 16px; font-size: 0.9rem;" onclick="go('db')">🗄️ Base de Datos</button>
     </div>
 
-    <div class="grid two">
-      <div class="panel">
-        <h2>🔎 Buscar Alimento</h2>
-        <input id="q" class="input" placeholder="Ej. Pollo asado, Aceite, Arepa..." oninput="renderFoods()" style="margin-bottom: 16px;" />
-        <div id="foods" class="list" style="max-height: 550px; overflow-y: auto; padding-right: 8px;">
-          </div>
-      </div>
-
-      <div>
-        <div class="panel">
-          <h2>🍽️ Consumido (<span id="consumidoFecha">Hoy</span>)</h2>
-          <div id="todayFoods" class="list">
-            </div>
-        </div>
+    <div class="panel">
+      <h2>🔎 Buscar Alimento</h2>
+      <input id="q" class="input" placeholder="Ej. Huevo, Cafe, Platano..." oninput="renderFoods()" style="margin-bottom: 16px;" />
+      <div id="foods" class="list" style="max-height: 550px; overflow-y: auto; padding-right: 8px;">
+        <!-- Inyectado por JS -->
       </div>
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: GESTOR DE BASE DE DATOS GLOBAL
+       ========================================= -->
+  <section id="db" class="view container">
+    <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <h1>🗄️ Base de Datos</h1>
+        <p class="muted">Añade, edita o elimina alimentos de tu propia librería.</p>
+      </div>
+      <button class="btn" style="padding: 10px 16px; font-size: 0.9rem;" onclick="go('comidas')">Volver a buscar</button>
+    </div>
+
+    <div class="panel">
+      <h2>
+        <span id="dbFormTitle">✨ Añadir Alimento</span> 
+        <button class="btn" id="dbCancelBtn" style="display:none; padding: 6px 12px; font-size: 0.8rem;" onclick="cancelEditDB()">Cancelar</button>
+      </h2>
+      <form class="form" onsubmit="saveToDB(event)">
+        <input type="hidden" id="dbId" />
+        <div class="grid two">
+          <input id="dbName" class="input" placeholder="Nombre (Ej. Arepa de Choclo)" required maxlength="40" />
+          <input id="dbBrand" class="input" placeholder="Marca (Opcional, Ej. Casero)" maxlength="30" />
+        </div>
+        <div class="grid two">
+          <input id="dbKcal" class="input" type="number" min="0" placeholder="Calorías totales" required />
+          <input id="dbServ" class="input" type="number" min="1" placeholder="Porción en g/ml (Ej. 100)" value="100" />
+        </div>
+        <div class="grid three">
+          <input id="dbP" class="input" type="number" min="0" step="0.1" placeholder="Proteína (g)" />
+          <input id="dbC" class="input" type="number" min="0" step="0.1" placeholder="Carbs (g)" />
+          <input id="dbF" class="input" type="number" min="0" step="0.1" placeholder="Grasas (g)" />
+        </div>
+        <button class="btn primary" id="dbSubmitBtn" style="width: 100%;">Guardar en Base de Datos</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2>📋 Catálogo Completo</h2>
+      <input id="dbSearch" class="input" placeholder="Buscar para editar o borrar..." oninput="renderDBList()" style="margin-bottom: 15px;" />
+      <div id="dbList" class="list" style="max-height: 500px; overflow-y: auto;">
+        <!-- Inyectado por JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       VISTA: AYUNO
+       ========================================= -->
   <section id="ayuno" class="view container">
     <div class="section-header">
       <h1>⏳ Ayuno</h1>
-      <p class="muted">El sistema te avisará cómo romperlo adecuadamente según las horas.</p>
+      <p class="muted">El sistema detecta si lo programaste a futuro o si ya está en curso.</p>
     </div>
 
     <div class="panel" style="text-align: center;">
       <h2>Cronómetro de Ayuno</h2>
       <div class="timer" id="timer">00:00:00</div>
       <p id="phase" class="muted" style="font-weight: 700; font-size: 1.1rem;">Sin ayuno activo</p>
-      
-      <div class="actions" style="justify-content: center; margin-top: 24px;" id="ayunoActions">
-        </div>
+      <div class="actions" style="justify-content: center; margin-top: 24px;" id="ayunoActions"></div>
     </div>
 
     <div class="grid three">
-      <div class="panel kpi">
-        <span>Récord Max</span>
-        <b id="bestFast">0h</b>
-      </div>
-      <div class="panel kpi">
-        <span>Promedio</span>
-        <b id="avgFast">0h</b>
-      </div>
-      <div class="panel kpi">
-        <span>Completados</span>
-        <b id="fastCount">0</b>
-      </div>
+      <div class="panel kpi"><span>Récord Max</span><b id="bestFast">0h</b></div>
+      <div class="panel kpi"><span>Promedio</span><b id="avgFast">0h</b></div>
+      <div class="panel kpi"><span>Completados</span><b id="fastCount">0</b></div>
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: PESO
+       ========================================= -->
   <section id="peso" class="view container">
     <div class="section-header">
       <h1>⚖️ Peso</h1>
@@ -702,8 +581,7 @@
           <input id="w" class="input" type="number" min="20" max="300" step="0.1" placeholder="Ej. 75.5" required />
           <button class="btn primary">Guardar</button>
         </form>
-        <div id="weights" class="list" style="margin-top: 24px; max-height: 250px; overflow-y: auto;">
-          </div>
+        <div id="weights" class="list" style="margin-top: 24px; max-height: 250px; overflow-y: auto;"></div>
       </div>
       <div class="panel">
         <canvas id="chart"></canvas>
@@ -711,6 +589,9 @@
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: PERFIL (Validado lógicamente)
+       ========================================= -->
   <section id="perfil" class="view container">
     <div class="section-header">
       <h1>👤 Perfil</h1>
@@ -719,17 +600,21 @@
 
     <div class="grid two">
       <form class="panel form" onsubmit="saveProfile(event)">
-        <input id="name" class="input" placeholder="Tu nombre" maxlength="30" />
+        <!-- Máximo 15 caracteres para evitar nombres ridículamente largos -->
+        <input id="name" class="input" placeholder="Tu nombre" maxlength="15" />
         
         <div class="grid two">
-          <input id="age" class="input" type="number" min="10" placeholder="Edad" required />
-          <input id="height" class="input" type="number" min="100" placeholder="Altura (cm)" required />
+          <input id="age" class="input" type="number" min="10" max="110" placeholder="Edad" required />
+          <!-- Altura humana con tope realista -->
+          <input id="height" class="input" type="number" min="100" max="250" placeholder="Altura (cm)" required />
         </div>
         
-        <input id="weight" class="input" type="number" min="20" step="0.1" placeholder="Peso actual (kg)" required />
+        <!-- Peso validado de 20kg a 300kg -->
+        <input id="weight" class="input" type="number" min="20" max="300" step="0.1" placeholder="Peso actual (kg)" required />
         
         <label class="muted" style="font-size: 0.9rem; font-weight: 700; margin-bottom: -4px;">Meta Calórica Manual (Opcional)</label>
-        <input id="manualGoal" class="input" type="number" min="500" placeholder="Ej. 1500 (Vacío = Automático)" />
+        <!-- Permitimos 0, pero la lógica lanzará advertencia -->
+        <input id="manualGoal" class="input" type="number" min="0" max="8000" placeholder="Ej. 1500 (Vacío = Auto)" />
         
         <select id="gender" class="input">
           <option value="male">Hombre</option>
@@ -754,8 +639,7 @@
       </form>
 
       <div>
-        <div class="panel" id="profileBox">
-          </div>
+        <div class="panel" id="profileBox"></div>
         <div class="panel">
           <h2>💾 Sistema</h2>
           <div class="actions">
@@ -773,19 +657,18 @@
 
 </main>
 
+<!-- MODAL CALCULADORA DE PORCIONES -->
 <div id="portionModal" class="modal-overlay">
   <div class="modal">
     <h2 id="modalFoodName" style="font-size: 1.3rem; margin-bottom: 8px;">Nombre Alimento</h2>
-    <p class="muted" style="font-size: 0.95rem; margin-bottom: 24px;">Indica la cantidad exacta. Calcularemos todos los macros por ti.</p>
+    <p class="muted" style="font-size: 0.95rem; margin-bottom: 24px;">Indica la cantidad exacta. Calcularemos los macros automáticamente.</p>
     
     <form class="form" onsubmit="confirmAddFood(event)">
       <input type="hidden" id="modalFoodId" />
-      
       <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
         <input id="modalGrams" class="input" type="number" min="1" step="0.1" required style="font-size: 1.3rem; text-align: center; font-weight: 900;" />
         <span style="font-weight: 900; color: var(--muted); font-size: 1.1rem; min-width: 50px;">g / ml</span>
       </div>
-      
       <div class="actions">
         <button type="button" class="btn" style="flex: 1;" onclick="closeModal()">Cancelar</button>
         <button type="submit" class="btn primary" style="flex: 1;">Agregar</button>
@@ -794,14 +677,13 @@
   </div>
 </div>
 
+<!-- MODAL AYUNO -->
 <div id="fastModal" class="modal-overlay">
   <div class="modal">
-    <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Ajustar hora de inicio</h2>
-    <p class="muted" style="font-size: 0.95rem; margin-bottom: 24px;">Selecciona la fecha y hora exacta en la que empezaste a ayunar.</p>
-    
+    <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Programar Ayuno</h2>
+    <p class="muted" style="font-size: 0.95rem; margin-bottom: 24px;">Selecciona la hora de inicio (pasada o futura).</p>
     <form class="form" onsubmit="saveFastTime(event)">
       <input id="fastDateTime" class="input" type="datetime-local" required style="font-size: 1.1rem; text-align: center; font-weight: 900; margin-bottom: 12px;" />
-      
       <div class="actions">
         <button type="button" class="btn" style="flex: 1;" onclick="closeFastModal()">Cancelar</button>
         <button type="submit" class="btn primary" style="flex: 1;">Guardar</button>
@@ -810,9 +692,34 @@
   </div>
 </div>
 
+<!-- MODAL EJERCICIO MEJORADO -->
+<div id="exerciseModal" class="modal-overlay">
+  <div class="modal">
+    <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Registrar Actividad</h2>
+    <p class="muted" style="font-size: 0.95rem; margin-bottom: 20px;">Cálculo metabólico según tu peso actual.</p>
+    
+    <form class="form" onsubmit="confirmAddExercise(event)">
+      <select id="exType" class="input" required>
+        <option value="" disabled selected>Selecciona una actividad</option>
+        <option value="walk">Caminar</option>
+        <option value="jog">Trotar</option>
+        <option value="run">Correr</option>
+      </select>
+      <div style="display: flex; align-items: center; gap: 16px; margin-top: 10px; margin-bottom: 12px;">
+        <input id="exMins" class="input" type="number" min="1" max="300" placeholder="Tiempo" required style="font-size: 1.2rem; text-align: center; font-weight: 900;" />
+        <span style="font-weight: 900; color: var(--muted); font-size: 1.1rem; min-width: 70px;">Minutos</span>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" style="flex: 1;" onclick="closeExerciseModal()">Cancelar</button>
+        <button type="submit" class="btn primary" style="flex: 1;">Registrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="container">
-    <p>&copy; <span id="year"></span> Avila Mora Soluciones</p>
+    <p>&copy; <span id="year"></span> <a href="https://avilamorasoluciones.github.io/ams" target="_blank" rel="noopener">Avila Mora Soluciones</a></p>
   </div>
 </footer>
 
@@ -826,19 +733,23 @@ const sanitize = (str) => {
   return str.replace(/[&<>"'/]/ig, (match) => map[match]);
 };
 
+const normalizeStr = (str) => {
+  if(!str) return "";
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+};
+
 const getLocalISODate = (d = new Date()) => {
   const tzOffset = d.getTimezoneOffset() * 60000;
   return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
 };
 
-// Formatea los milisegundos a YYYY-MM-DDThh:mm para el input datetime-local
 const getDatetimeLocal = (ms) => {
   const d = new Date(ms);
   const tzOffset = d.getTimezoneOffset() * 60000;
   return new Date(d - tzOffset).toISOString().slice(0, 16);
 };
 
-const KEY = "ayukcal_v7";
+const KEY = "ayukcal_v8"; 
 const $ = id => document.getElementById(id);
 let viewDate = getLocalISODate();
 
@@ -850,10 +761,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme(); 
   $("datePicker").value = viewDate; 
   go("inicio");
-  
-  if(typeof SEED_DB === 'undefined') {
-    alert("⚠️ Error: No se encontró el archivo db.js. Asegúrate de que esté en la misma carpeta que este archivo HTML.");
-  }
 });
 
 // =========================================
@@ -862,50 +769,28 @@ document.addEventListener("DOMContentLoaded", () => {
 function state() {
   try {
     let s = JSON.parse(localStorage.getItem(KEY));
-    if (!s) {
-      s = { profile: null, foods: [], db: [], weights: [], fast: null, fasts: [] };
-    }
+    if (!s) { s = { profile: null, foods: [], db: [], weights: [], fast: null, fasts: [], water: [], exercises: [] }; }
+    s.water = s.water || []; s.exercises = s.exercises || [];
     
-    // Validar si la base de datos externa cargó y alimentar el estado local si está vacío
     if ((!s.db || s.db.length === 0) && typeof SEED_DB !== 'undefined') {
       s.db = SEED_DB.map((x, i) => ({
-        id: "db_" + i, 
-        name: x[0], 
-        cat: x[1], 
-        brand: x[2], 
-        serv: x[3], 
-        kcal: x[4], 
-        p: x[5], 
-        c: x[6], 
-        f: x[7]
+        id: "db_" + i, name: x[0], cat: x[1], brand: x[2], serv: x[3], kcal: x[4], p: x[5], c: x[6], f: x[7]
       }));
     }
     return s;
-  } catch (e) { 
-    return { profile: null, foods: [], db: [], weights: [], fast: null, fasts: [] }; 
-  }
+  } catch (e) { return { profile: null, foods: [], db: [], weights: [], fast: null, fasts: [], water: [], exercises: [] }; }
 }
 
-function save(s) { 
-  localStorage.setItem(KEY, JSON.stringify(s)); 
-  refresh(); 
-}
+function save(s) { localStorage.setItem(KEY, JSON.stringify(s)); refresh(); }
 
 function toast(msg) {
   const oldToast = document.querySelector(".toast"); 
   if(oldToast) oldToast.remove();
-  
   const el = document.createElement("div"); 
-  el.className = "toast"; 
-  el.textContent = msg; 
+  el.className = "toast"; el.textContent = msg; 
   document.body.appendChild(el);
-  
   setTimeout(() => el.classList.add("show"), 10); 
-  
-  setTimeout(() => { 
-    el.classList.remove("show"); 
-    setTimeout(() => el.remove(), 300); 
-  }, 3000);
+  setTimeout(() => { el.classList.remove("show"); setTimeout(() => el.remove(), 300); }, 3500);
 }
 
 // =========================================
@@ -914,522 +799,414 @@ function toast(msg) {
 function go(id) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("active")); 
   $(id).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b => { b.classList.toggle("active", b.dataset.nav === id); });
   
-  document.querySelectorAll(".nav-btn").forEach(b => {
-    b.classList.toggle("active", b.dataset.nav === id);
-  });
+  if(id === 'db') renderDBList();
+  if(id === 'comidas') { $("q").value = ""; renderFoods(); }
   
-  refresh(); 
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  refresh(); window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function toggleTheme() {
-  const html = document.documentElement; 
-  const currentTheme = html.getAttribute("data-theme");
+  const html = document.documentElement; const currentTheme = html.getAttribute("data-theme");
   const newTheme = currentTheme === "dark" ? "light" : "dark";
-  
   html.setAttribute("data-theme", newTheme); 
   $("themeBtn").textContent = newTheme === "dark" ? "🌙" : "☀️";
   $("themeColorMeta").setAttribute("content", newTheme === "dark" ? "#0f1714" : "#f4f9f5");
-  
-  localStorage.setItem("ayukcal_theme", newTheme); 
-  draw();
+  localStorage.setItem("ayukcal_theme", newTheme); draw();
 }
 
 function initTheme() {
   const savedTheme = localStorage.getItem("ayukcal_theme") || "dark"; 
   document.documentElement.setAttribute("data-theme", savedTheme);
-  
   $("themeBtn").textContent = savedTheme === "dark" ? "🌙" : "☀️"; 
   $("themeColorMeta").setAttribute("content", savedTheme === "dark" ? "#0f1714" : "#f4f9f5");
 }
 
-// =========================================
-// GESTIÓN DE FECHAS (HISTORIAL)
-// =========================================
 function setDate(val) { 
-  if(!val) return; 
-  viewDate = val; 
-  $("consumidoFecha").textContent = viewDate === getLocalISODate() ? "Hoy" : viewDate; 
-  refresh(); 
+  if(!val) return; viewDate = val; refresh(); 
 }
 
 function changeDate(days) { 
-  const d = new Date(viewDate + 'T12:00:00'); 
-  d.setDate(d.getDate() + days); 
-  viewDate = getLocalISODate(d); 
-  $("datePicker").value = viewDate; 
-  setDate(viewDate); 
+  const d = new Date(viewDate + 'T12:00:00'); d.setDate(d.getDate() + days); 
+  viewDate = getLocalISODate(d); $("datePicker").value = viewDate; setDate(viewDate); 
 }
 
 // =========================================
 // CÁLCULOS METABÓLICOS Y MACROS
 // =========================================
 function tdee(p) {
-  const bmr = p.gender === "male" 
-    ? (10 * p.weight) + (6.25 * p.height) - (5 * p.age) + 5 
-    : (10 * p.weight) + (6.25 * p.height) - (5 * p.age) - 161;
-    
-  const multiplier = { 
-    sedentary: 1.2, 
-    light: 1.375, 
-    moderate: 1.55, 
-    active: 1.725, 
-    extreme: 1.9 
-  }[p.activity] || 1.55;
-  
+  const bmr = p.gender === "male" ? (10 * p.weight) + (6.25 * p.height) - (5 * p.age) + 5 : (10 * p.weight) + (6.25 * p.height) - (5 * p.age) - 161;
+  const multiplier = { sedentary: 1.2, light: 1.375, moderate: 1.55, active: 1.725, extreme: 1.9 }[p.activity] || 1.55;
   return Math.round(bmr * multiplier);
 }
 
 function macros(p) {
-  let kcal = 0;
-  
-  if (p.manualGoal && p.manualGoal >= 500) {
-    kcal = p.manualGoal; 
-  } else {
-    kcal = p.goal === "bulk" ? tdee(p) + 300 : p.goal === "maintain" ? tdee(p) : Math.max(1200, tdee(p) - 500);
-  }
-
+  let kcal = (p.manualGoal !== null && p.manualGoal !== "") ? p.manualGoal : (p.goal === "bulk" ? tdee(p) + 300 : p.goal === "maintain" ? tdee(p) : Math.max(1200, tdee(p) - 500));
   const protein = Math.round(p.weight * (p.goal === "cut" ? 2.0 : 1.8)); 
   const fat = Math.round((kcal * 0.25) / 9);
   const carbs = Math.max(0, Math.round((kcal - protein * 4 - fat * 9) / 4));
-  
   return { kcal, protein, fat, carbs };
 }
 
 function totalsForDate(dStr) { 
-  return state().foods.filter(x => x.date === dStr).reduce((acc, x) => { 
-    acc.kcal += x.kcal; 
-    acc.p += x.p; 
-    acc.c += x.c; 
-    acc.f += x.f; 
-    return acc; 
-  }, { kcal: 0, p: 0, c: 0, f: 0 }); 
+  const s = state();
+  const foodTotals = s.foods.filter(x => x.date === dStr).reduce((acc, x) => { acc.kcalIn += x.kcal; acc.p += x.p; acc.c += x.c; acc.f += x.f; return acc; }, { kcalIn: 0, p: 0, c: 0, f: 0 }); 
+  const waterTotal = s.water.filter(x => x.date === dStr).reduce((acc, x) => acc + x.ml, 0);
+  const exerciseTotal = s.exercises.filter(x => x.date === dStr).reduce((acc, x) => acc + x.kcal, 0);
+  return { ...foodTotals, water: waterTotal, kcalOut: exerciseTotal };
 }
+
+// =========================================
+// AGUA PERSONALIZADA Y EJERCICIO (CRUD)
+// =========================================
+function addWater(ml) {
+  const s = state(); s.water.unshift({ uuid: Date.now().toString(), date: getLocalISODate(), ml: ml }); save(s); toast(`💧 +${ml}ml registrados.`);
+}
+
+function addCustomWater() {
+  const val = parseInt($("customWaterInput").value);
+  if(!val || val <= 0) return toast("Por favor, ingresa una cantidad válida de ml.");
+  addWater(val); $("customWaterInput").value = "";
+}
+
+function removeWater(uuid) { const s = state(); s.water = s.water.filter(x => x.uuid !== uuid); save(s); toast("Agua eliminada."); }
+
+function openExerciseModal() { $("exerciseModal").classList.add("active"); }
+function closeExerciseModal() { $("exerciseModal").classList.remove("active"); }
+
+function confirmAddExercise(e) {
+  e.preventDefault(); const s = state();
+  if(!s.profile || !s.profile.weight) { closeExerciseModal(); return alert("⚠️ Guarda tu peso actual en 'Perfil' para calcular calorías."); }
+  const type = $("exType").value; const mins = +$("exMins").value;
+  if(!type || mins <= 0) return;
+
+  const METS = { walk: 3.5, jog: 7.0, run: 9.8 };
+  const label = { walk: "Caminata", jog: "Trote", run: "Carrera" }[type];
+  const kcalBurned = Math.round(METS[type] * s.profile.weight * (mins / 60));
+
+  s.exercises.unshift({ uuid: Date.now().toString(), date: viewDate, label: label, mins: mins, kcal: kcalBurned });
+  save(s); closeExerciseModal(); $("exMins").value = ""; toast(`🏃 ¡Excelente! Quemaste aprox. ${kcalBurned} Kcal`);
+}
+
+function removeExercise(uuid) { const s = state(); s.exercises = s.exercises.filter(x => x.uuid !== uuid); save(s); toast("Ejercicio eliminado."); }
 
 // =========================================
 // RENDERIZADO DE COMPONENTES
 // =========================================
+function renderHeader() {
+  const p = state().profile;
+  const badge = $("userBadge");
+
+  if (!p || !p.name?.trim()) {
+    badge.style.display = "none";
+    return;
+  }
+
+  const cleanName = p.name.trim();
+
+  const shortName =
+    cleanName.length > 10
+      ? cleanName.substring(0, 10) + "..."
+      : cleanName;
+
+  badge.textContent = `👋 ${shortName}`;
+  badge.title = cleanName;
+  badge.style.display = "inline-block";
+}
+
 function renderProfile() {
   const p = state().profile;
-  
   if (p) {
-    ["name", "age", "height", "weight", "gender", "activity", "goal", "manualGoal"].forEach(k => { 
-      if($(k)) $(k).value = p[k] || ""; 
-    });
+    ["name", "age", "height", "weight", "gender", "activity", "goal"].forEach(k => { if($(k)) $(k).value = p[k] || ""; });
+    $("manualGoal").value = (p.manualGoal !== null && p.manualGoal !== undefined) ? p.manualGoal : "";
     
     const m = macros(p);
-    
+    const imc = (p.weight / Math.pow(p.height / 100, 2)).toFixed(1);
+    let imcLabel = "Normal"; let imcColor = "var(--primary)";
+    if(imc < 18.5) { imcLabel = "Bajo peso"; imcColor = "var(--warning)"; }
+    else if(imc >= 25 && imc < 30) { imcLabel = "Sobrepeso"; imcColor = "var(--warning)"; }
+    else if(imc >= 30) { imcLabel = "Obesidad"; imcColor = "var(--danger)"; }
+    const waterGoal = Math.round(p.weight * 35);
+
     $("profileBox").innerHTML = `
-      <h2>👋 Hola, ${sanitize(p.name) || "Guerrero"}</h2>
-      <div class="grid two" style="margin-top: 16px;">
-        <div class="kpi">
-          <span>Meta Diaria</span>
-          <b style="color: var(--primary);">${m.kcal}</b> kcal
+      <h2>📊 Datos Técnicos</h2>
+      <div style="background: var(--bg); padding: 15px; border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--border); display: flex; justify-content: space-between;">
+        <div><span class="muted" style="font-size: 0.8rem; font-weight: 700; display: block;">IMC</span>
+          <b style="font-size: 1.4rem; color: ${imcColor};">${imc}</b> <span class="badge" style="background: transparent; border: 1px solid ${imcColor}; color: ${imcColor};">${imcLabel}</span>
         </div>
-        <div class="kpi">
-          <span>Proteína</span>
-          <b>${m.protein}g</b>
-        </div>
-        <div class="kpi">
-          <span>Carbohidratos</span>
-          <b>${m.carbs}g</b>
-        </div>
-        <div class="kpi">
-          <span>Grasas</span>
-          <b>${m.fat}g</b>
-        </div>
+        <div style="text-align: right;"><span class="muted" style="font-size: 0.8rem; font-weight: 700; display: block;">Agua Diaria</span><b style="font-size: 1.4rem; color: var(--water);">${waterGoal} ml</b></div>
       </div>
-      ${p.manualGoal ? `<p class="muted" style="text-align: center; margin-top: 16px; font-size: 0.85rem;">⚠️ Usando Meta Manual: ${p.manualGoal} kcal.</p>` : ''}
+      <div class="grid two">
+        <div class="kpi"><span>Meta Diaria</span><b style="color: var(--primary);">${m.kcal}</b> kcal</div>
+        <div class="kpi"><span>Proteína</span><b>${m.protein}g</b></div>
+        <div class="kpi"><span>Carbohidratos</span><b>${m.carbs}g</b></div>
+        <div class="kpi"><span>Grasas</span><b>${m.fat}g</b></div>
+      </div>
+      ${(p.manualGoal === 0) ? `<p style="text-align: center; margin-top: 16px; font-size: 0.85rem; color: var(--warning);">⚠️ Meta de 0 Kcal guardada. ¿Estás en un ayuno prolongado?</p>` : ''}
     `;
-  } else {
-    $("profileBox").innerHTML = `<p class="muted">Calcula tu perfil para desbloquear metas automáticas.</p>`;
-  }
+  } else { $("profileBox").innerHTML = `<p class="muted">Calcula tu perfil para desbloquear metas, IMC y rutinas.</p>`; }
 }
 
 function renderDaily() {
-  const p = state().profile;
-  const t = totalsForDate(viewDate);
+  const p = state().profile; const t = totalsForDate(viewDate);
   const m = p ? macros(p) : { kcal: 2000, protein: 120, carbs: 220, fat: 60 };
   
-  const pct = Math.min(100, Math.round((t.kcal / m.kcal) * 100)) || 0;
-  const barColor = t.kcal > m.kcal ? "var(--danger)" : "var(--primary)";
-  const boxBorderColor = t.kcal > m.kcal ? "var(--danger-bg)" : "var(--border)";
+  const netKcal = Math.round(t.kcalIn - t.kcalOut);
+  const pct = Math.min(100, Math.round((netKcal / m.kcal) * 100)) || 0;
+  const barColor = netKcal > m.kcal ? "var(--danger)" : "var(--primary)";
   
+  // INICIO: Kcal, Peso
+  $("homeKcal").textContent = netKcal; $("homeGoal").textContent = m.kcal;
+  
+  // INICIO: Agua y su animación
+  const waterGoal = p ? Math.round(p.weight * 35) : 2500;
+  $("waterGoalLabel").textContent = waterGoal;
+  $("waterCount").textContent = `${t.water} ml`;
+  let waterPct = Math.min(100, Math.round((t.water / waterGoal) * 100));
+  $("waterFill").style.height = `${waterPct}%`;
+
+  // INICIO: Ejercicio y pista animada
+  $("exerciseKcal").textContent = t.kcalOut;
+  let runnerPct = Math.min(100, Math.round((t.kcalOut / 1000) * 100)); // Usando 1000 Kcal como meta visual de la pista
+  $("runnerIcon").style.left = `${runnerPct}%`;
+
+  // DIARIO: Detalles
   $("daily").innerHTML = `
-    <div class="grid four">
-      <div class="kpi" style="border: 2px solid ${boxBorderColor};">
-        <span>Calorías</span>
-        <b>${Math.round(t.kcal)}</b>
-        <div class="progress">
-          <i style="width: ${pct}%; background: ${barColor};"></i>
-        </div>
-        <small class="muted" style="display: block; margin-top: 10px;">Meta: ${m.kcal}</small>
+    <div style="background: var(--bg); padding: 16px; border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--border); text-align: center;">
+      <span class="muted" style="font-size: 0.85rem; font-weight: 700;">Balance Calórico (Netas)</span>
+      <div style="font-size: 1.1rem; font-weight: 900; margin-top: 4px;">
+        <span style="color: var(--text)">${t.kcalIn} Cons</span> <span style="color: var(--muted)"> - </span> 
+        <span style="color: var(--danger)">${t.kcalOut} Quemadas</span> <span style="color: var(--muted)"> = </span> 
+        <span style="color: ${barColor}">${netKcal} Netas</span>
       </div>
-      <div class="kpi">
-        <span>Proteína</span>
-        <b>${Math.round(t.p)}g</b>
-        <small class="muted">Meta: ${m.protein}g</small>
-      </div>
-      <div class="kpi">
-        <span>Carbs</span>
-        <b>${Math.round(t.c)}g</b>
-        <small class="muted">Meta: ${m.carbs}g</small>
-      </div>
-      <div class="kpi">
-        <span>Grasas</span>
-        <b>${Math.round(t.f)}g</b>
-        <small class="muted">Meta: ${m.fat}g</small>
-      </div>
+      <div class="progress" style="margin-top: 10px;"><i style="width: ${pct}%; background: ${barColor};"></i></div>
+      <small class="muted" style="display: block; margin-top: 8px;">Meta del día: ${m.kcal} Kcal</small>
+    </div>
+    <div class="grid three">
+      <div class="kpi"><span>Proteína</span><b>${Math.round(t.p)}g</b><small class="muted">Meta: ${m.protein}g</small></div>
+      <div class="kpi"><span>Carbs</span><b>${Math.round(t.c)}g</b><small class="muted">Meta: ${m.carbs}g</small></div>
+      <div class="kpi"><span>Grasas</span><b>${Math.round(t.f)}g</b><small class="muted">Meta: ${m.fat}g</small></div>
     </div>
   `;
 }
 
 function renderFoods() {
-  const q = sanitize($("q").value.toLowerCase());
-  const db = state().db;
+  const rawQ = $("q").value; const q = normalizeStr(rawQ); const db = state().db;
+  const filteredItems = db.filter(f => normalizeStr(`${f.name} ${f.brand}`).includes(q)).slice(0, 30);
   
-  const filteredItems = db.filter(f => `${f.name} ${f.brand}`.toLowerCase().includes(q)).slice(0, 30);
-  
-  $("foods").innerHTML = filteredItems.map(f => `
-    <div class="row">
-      <div>
-        <strong style="font-size: 1rem;">${f.name}</strong><br>
-        <span class="badge">${f.brand}</span> 
-        <span class="badge">Base: ${f.serv}g</span>
-        <div class="row-detail">P: ${f.p}g · C: ${f.c}g · G: ${f.f}g (${f.kcal} kcal)</div>
+  if(filteredItems.length > 0) {
+    $("foods").innerHTML = filteredItems.map(f => `
+      <div class="row">
+        <div><strong style="font-size: 1rem;">${f.name}</strong><br><span class="badge">${f.brand}</span> <span class="badge">Base: ${f.serv}g</span>
+        <div class="row-detail">P: ${f.p}g · C: ${f.c}g · G: ${f.f}g (${f.kcal} kcal)</div></div>
+        <button class="btn primary icon" onclick="openModal('${f.id}')">➕</button>
       </div>
-      <button class="btn primary icon" onclick="openModal('${f.id}')">➕</button>
-    </div>
-  `).join("") || "<p class='muted'>No se encontró en la base de datos.</p>";
-  
-  renderToday();
+    `).join("");
+  } else {
+    $("foods").innerHTML = `
+      <div style="text-align: center; padding: 30px 10px; background: var(--bg); border-radius: 16px; border: 1px dashed var(--border);">
+        <p class="muted" style="margin-bottom: 15px; font-size: 1.1rem; font-weight: 800;">¿No encuentras tu alimento? 🤔</p>
+        <button class="btn primary" style="width: 100%; box-shadow: var(--shadow);" onclick="go('db')">➕ Agrégalo a la Base de Datos</button>
+      </div>
+    `;
+  }
 }
 
-function renderToday() {
-  const todayItems = state().foods.filter(x => x.date === viewDate);
+// CRUD COMPLETO EN DIARIO (Comidas, Agua, Ejercicio)
+function renderTodayLists() {
+  const s = state();
+  const todayFoods = s.foods.filter(x => x.date === viewDate);
+  const todayExercises = s.exercises.filter(x => x.date === viewDate);
+  const todayWater = s.water.filter(x => x.date === viewDate);
   
-  $("todayFoods").innerHTML = todayItems.map(x => `
+  $("todayFoods").innerHTML = todayFoods.map(x => `
     <div class="row">
-      <div>
-        <b style="font-size: 1rem;">${x.name}</b> 
-        <span class="badge">${x.serv}g</span><br>
-        <div class="row-detail">
-          ${x.kcal} kcal | P: ${x.p}g · C: ${x.c}g · G: ${x.f}g
-        </div>
-      </div>
+      <div><b style="font-size: 1rem;">${x.name}</b> <span class="badge">${x.serv}g/ml</span><br><div class="row-detail">${x.kcal} kcal | P: ${x.p}g · C: ${x.c}g · G: ${x.f}g</div></div>
       <button class="btn danger" style="padding: 8px 14px; font-size: 0.85rem;" onclick="removeFood('${x.uuid}')">Quitar</button>
     </div>
-  `).join("") || "<p class='muted'>No has registrado comidas en este día.</p>";
+  `).join("") || "<p class='muted'>No has registrado comidas hoy.</p>";
+
+  const exercisesEl = $("todayExercises");
+  if(exercisesEl) {
+    exercisesEl.innerHTML = todayExercises.map(x => `
+      <div class="row">
+        <div><b style="font-size: 1rem;">🏃 ${x.label}</b> <span class="badge">${x.mins} min</span><br><div class="row-detail" style="color: var(--danger)">🔥 ${x.kcal} kcal quemadas</div></div>
+        <button class="btn danger" style="padding: 8px 14px; font-size: 0.85rem;" onclick="removeExercise('${x.uuid}')">Quitar</button>
+      </div>
+    `).join("") || "<p class='muted'>Sin actividad física hoy.</p>";
+  }
+
+  const waterEl = $("todayWater");
+  if(waterEl) {
+    waterEl.innerHTML = todayWater.map(x => `
+      <div class="row">
+        <div><b style="font-size: 1rem;">💧 Vaso de Agua</b> <span class="badge" style="background: var(--water-bg); color: var(--water); border-color: transparent;">${x.ml} ml</span></div>
+        <button class="btn danger" style="padding: 8px 14px; font-size: 0.85rem;" onclick="removeWater('${x.uuid}')">Quitar</button>
+      </div>
+    `).join("") || "<p class='muted'>Aún no registras agua hoy.</p>";
+  }
 }
 
 // =========================================
-// MODAL DE PORCIONES Y REGISTRO DE COMIDA
+// MODAL PORCIONES Y REGISTRO (CON RECORDATORIO)
 // =========================================
 function openModal(id) {
-  const f = state().db.find(x => x.id === id); 
-  if(!f) return;
-  
-  $("modalFoodId").value = f.id; 
-  $("modalFoodName").textContent = f.name; 
-  $("modalGrams").value = f.serv;
-  
+  const f = state().db.find(x => x.id === id); if(!f) return;
+  $("modalFoodId").value = f.id; $("modalFoodName").textContent = f.name; $("modalGrams").value = f.serv;
   $("portionModal").classList.add("active");
 }
-
-function closeModal() { 
-  $("portionModal").classList.remove("active"); 
-}
+function closeModal() { $("portionModal").classList.remove("active"); }
 
 function confirmAddFood(e) {
-  e.preventDefault();
-  const s = state();
-  const id = $("modalFoodId").value;
-  const inputGrams = +$("modalGrams").value;
-  
-  const f = s.db.find(x => x.id === id); 
-  if(!f || inputGrams <= 0) return;
+  e.preventDefault(); const s = state();
+  const id = $("modalFoodId").value; const inputGrams = +$("modalGrams").value;
+  const f = s.db.find(x => x.id === id); if(!f || inputGrams <= 0) return;
   
   const ratio = inputGrams / f.serv; 
-  
   s.foods.unshift({ 
-    ...f, 
-    serv: inputGrams, 
-    kcal: Math.round(f.kcal * ratio), 
-    p: +(f.p * ratio).toFixed(1), 
-    c: +(f.c * ratio).toFixed(1), 
-    f: +(f.f * ratio).toFixed(1), 
-    date: viewDate, 
-    time: Date.now(), 
-    uuid: Date.now().toString() + Math.random() 
+    ...f, serv: inputGrams, kcal: Math.round(f.kcal * ratio), 
+    p: +(f.p * ratio).toFixed(1), c: +(f.c * ratio).toFixed(1), f: +(f.f * ratio).toFixed(1), 
+    date: viewDate, time: Date.now(), uuid: Date.now().toString() + Math.random() 
   });
-  
-  save(s); 
-  closeModal(); 
-  toast(`Añadido: ${inputGrams}g 🥑`);
+  save(s); closeModal(); toast(`Añadido: ${inputGrams}g 🥑. ¡Ojo! ¿Registraste el aceite o salsas?`);
 }
 
-function removeFood(uuid) { 
-  const s = state(); 
-  s.foods = s.foods.filter(x => x.uuid !== uuid); 
-  save(s); 
-}
+function removeFood(uuid) { const s = state(); s.foods = s.foods.filter(x => x.uuid !== uuid); save(s); toast("Comida quitada."); }
 
 function clearCurrentDay() { 
-  if (confirm(`🚨 ¿Estás seguro de vaciar todos los registros del día ${viewDate}?`)) { 
-    const s = state(); 
-    s.foods = s.foods.filter(x => x.date !== viewDate); 
-    save(s); 
-  } 
+  if (confirm(`🚨 ¿Estás seguro de vaciar las comidas del día ${viewDate}?`)) { const s = state(); s.foods = s.foods.filter(x => x.date !== viewDate); save(s); } 
 }
 
 // =========================================
-// PERFIL Y CONFIGURACIÓN
+// GESTOR DE BASE DE DATOS GLOBAL
+// =========================================
+function renderDBList() {
+  const q = normalizeStr($("dbSearch").value); const db = state().db;
+  const items = db.filter(f => normalizeStr(`${f.name} ${f.brand}`).includes(q));
+  $("dbList").innerHTML = items.map(f => `
+    <div class="row">
+      <div style="flex:1;"><strong style="font-size:0.95rem">${f.name}</strong> <span class="badge">${f.brand}</span><br><div class="row-detail">${f.kcal} kcal · P:${f.p}g · C:${f.c}g · G:${f.f}g</div></div>
+      <div style="display:flex; gap:6px;"><button class="btn" style="padding:8px 12px; font-size:0.85rem;" onclick="editDB('${f.id}')">✏️</button><button class="btn danger" style="padding:8px 12px; font-size:0.85rem;" onclick="deleteFromDB('${f.id}')">❌</button></div>
+    </div>
+  `).join("") || "<p class='muted'>No hay resultados.</p>";
+}
+
+function saveToDB(e) {
+  e.preventDefault(); const s = state(); const id = $("dbId").value || "db_custom_" + Date.now();
+  const f = {
+    id: id, name: sanitize($("dbName").value.trim()), brand: sanitize($("dbBrand").value.trim()) || "Casero", cat: "Personal", serv: Math.max(1, +$("dbServ").value || 100), 
+    kcal: Math.max(0, +$("dbKcal").value || 0), p: Math.max(0, +$("dbP").value || 0), c: Math.max(0, +$("dbC").value || 0), f: Math.max(0, +$("dbF").value || 0)
+  };
+  const idx = s.db.findIndex(x => x.id === id); if(idx >= 0) s.db[idx] = f; else s.db.unshift(f);
+  save(s); cancelEditDB(); renderDBList(); toast("Alimento guardado en DB 🗄️");
+}
+
+function editDB(id) {
+  const f = state().db.find(x => x.id === id); if(!f) return;
+  $("dbId").value = f.id; $("dbName").value = f.name; $("dbBrand").value = f.brand;
+  $("dbServ").value = f.serv; $("dbKcal").value = f.kcal; $("dbP").value = f.p; $("dbC").value = f.c; $("dbF").value = f.f;
+  $("dbFormTitle").textContent = "✏️ Editando Alimento"; $("dbSubmitBtn").textContent = "Actualizar Alimento";
+  $("dbCancelBtn").style.display = "inline-block"; window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function cancelEditDB() {
+  $("dbId").value = ""; $("dbName").value = ""; $("dbBrand").value = ""; $("dbServ").value = "100";
+  $("dbKcal").value = ""; $("dbP").value = ""; $("dbC").value = ""; $("dbF").value = "";
+  $("dbFormTitle").textContent = "✨ Añadir Alimento"; $("dbSubmitBtn").textContent = "Guardar en Base de Datos";
+  $("dbCancelBtn").style.display = "none";
+}
+function deleteFromDB(id) { if(!confirm("¿Borrar alimento global? (Comidas registradas no se afectan)")) return; const s = state(); s.db = s.db.filter(x => x.id !== id); save(s); renderDBList(); toast("Eliminado de la DB"); }
+
+// =========================================
+// PERFIL Y CONFIGURACIÓN LÓGICA
 // =========================================
 function saveProfile(e) {
-  e.preventDefault(); 
-  const s = state();
-  
+  e.preventDefault(); const s = state();
+  let manualInput = $("manualGoal").value;
+  let finalManual = (manualInput === "" || manualInput === null) ? null : Number(manualInput);
+
   s.profile = { 
-    name: sanitize($("name").value), 
-    age: Math.max(10, +$("age").value), 
-    height: Math.max(50, +$("height").value), 
-    weight: Math.max(20, +$("weight").value), 
-    gender: $("gender").value, 
-    activity: $("activity").value, 
-    goal: $("goal").value, 
-    manualGoal: $("manualGoal").value ? +$("manualGoal").value : null 
+    name: sanitize($("name").value), age: Math.max(10, +$("age").value), height: Math.max(100, +$("height").value), 
+    weight: Math.max(20, +$("weight").value), gender: $("gender").value, activity: $("activity").value, 
+    goal: $("goal").value, manualGoal: finalManual 
   };
+  save(s); 
   
-  save(s); 
-  toast("Perfil actualizado ✔️");
+  if(finalManual === 0) toast("¡Advertencia! Meta de 0 Kcal guardada ⚠️");
+  else toast("Perfil actualizado ✔️");
 }
 
 // =========================================
-// COACHING DE AYUNO (Y EDICIÓN MANUAL)
+// AYUNO
 // =========================================
-function startFast() { 
-  const s = state(); 
-  s.fast = { start: Date.now() }; 
-  save(s); 
-  toast("Ayuno iniciado ⏳"); 
-}
-
+function startFast() { const s = state(); s.fast = { start: Date.now() }; save(s); toast("Ayuno iniciado ⏳"); }
 function stopFast() {
-  const s = state(); 
-  if (!s.fast) return toast("No hay ningún ayuno activo.");
-  
+  const s = state(); if (!s.fast) return toast("No hay ningún ayuno activo.");
+  if(s.fast.start > Date.now()) { if(confirm("El ayuno programado aún no ha comenzado. ¿Deseas cancelarlo/borrarlo?")) { s.fast = null; save(s); toast("Ayuno programado cancelado."); } return; }
   const hours = (Date.now() - s.fast.start) / 36e5;
-  let msg = "";
-  
-  if (hours < 16) {
-    msg = `Llevas ${hours.toFixed(1)}h. Es un ayuno normal. Puedes romperlo con tus macros regulares sin problema.\n\n¿Finalizar ayuno?`;
-  } else if (hours < 20) {
-    msg = `Llevas ${hours.toFixed(1)}h. Para cuidar tu digestión, intenta comer la proteína y grasas primero, dejando los carbohidratos para el final.\n\n¿Finalizar ayuno?`;
-  } else {
-    msg = `🚨 ¡AYUNO PROFUNDO DE ${hours.toFixed(1)}h!\n\nTu cuerpo es extremadamente sensible a la insulina en este momento. Rompe el ayuno SOLO CON PROTEÍNA MAGRA (pollo, atún o caldo). Evita los carbohidratos por los próximos 45 minutos.\n\n¿Finalizar ayuno?`;
-  }
-  
+  let msg = hours < 16 ? `Llevas ${hours.toFixed(1)}h. Es un ayuno normal.\n\n¿Finalizar ayuno?` : hours < 20 ? `Llevas ${hours.toFixed(1)}h. Come proteína primero, carbs al final.\n\n¿Finalizar ayuno?` : `🚨 ¡AYUNO PROFUNDO DE ${hours.toFixed(1)}h!\n\nRompe SOLO CON PROTEÍNA MAGRA. Evita carbs por 45 mins.\n\n¿Finalizar ayuno?`;
   if(!confirm(msg)) return;
-  
-  s.fasts.unshift({ hours: +hours.toFixed(4), date: new Date().toISOString() }); 
-  s.fast = null; 
-  save(s); 
-  toast(`¡Ayuno de ${hours.toFixed(1)}h completado! 🏆`);
+  s.fasts.unshift({ hours: +hours.toFixed(4), date: new Date().toISOString() }); s.fast = null; save(s); toast(`¡Ayuno de ${hours.toFixed(1)}h completado! 🏆`);
 }
-
+function cancelFast() { if(confirm("¿Cancelar este ayuno? No se guardará en tu historial.")) { const s = state(); s.fast = null; save(s); toast("Ayuno borrado."); } }
 function renderFast() {
-  const s = state();
-  const actionsDiv = $("ayunoActions");
-  
+  const s = state(); const actionsDiv = $("ayunoActions");
   if (s.fast) {
-    const timeInSeconds = Math.floor((Date.now() - s.fast.start) / 1000);
-    const h = Math.floor(timeInSeconds / 3600);
-    const m = Math.floor((timeInSeconds % 3600) / 60);
-    const sec = timeInSeconds % 60;
-    
-    $("timer").textContent = [h, m, sec].map(x => String(x).padStart(2, "0")).join(":");
-    $("phase").textContent = "🔥 En curso..."; 
-    $("phase").style.color = "var(--primary)";
-    
-    actionsDiv.innerHTML = `
-      <button class="btn danger" onclick="stopFast()">Finalizar Ayuno</button>
-      <button class="btn" onclick="openFastModal()">✏️ Editar hora</button>
-    `;
+    const now = Date.now();
+    if(s.fast.start > now) {
+      const diffSecs = Math.floor((s.fast.start - now) / 1000); const h = Math.floor(diffSecs / 3600); const m = Math.floor((diffSecs % 3600) / 60); const sec = diffSecs % 60;
+      $("timer").textContent = [h, m, sec].map(x => String(x).padStart(2, "0")).join(":"); $("phase").textContent = "⏳ Comienza en..."; $("phase").style.color = "var(--warning)";
+      actionsDiv.innerHTML = `<button class="btn danger" onclick="cancelFast()">Cancelar Prog.</button><button class="btn" onclick="openFastModal()">✏️ Cambiar hora</button>`;
+    } else {
+      const timeInSeconds = Math.floor((now - s.fast.start) / 1000); const h = Math.floor(timeInSeconds / 3600); const m = Math.floor((timeInSeconds % 3600) / 60); const sec = timeInSeconds % 60;
+      $("timer").textContent = [h, m, sec].map(x => String(x).padStart(2, "0")).join(":"); $("phase").textContent = "🔥 En curso..."; $("phase").style.color = "var(--primary)";
+      actionsDiv.innerHTML = `<button class="btn danger" onclick="stopFast()">Finalizar Ayuno</button><button class="btn" style="color: var(--danger); border-color: transparent;" onclick="cancelFast()">Borrar</button><button class="btn" onclick="openFastModal()">✏️ Editar inicio</button>`;
+    }
   } else { 
-    $("timer").textContent = "00:00:00"; 
-    $("phase").textContent = "Inactivo"; 
-    $("phase").style.color = "var(--muted)"; 
-    
-    actionsDiv.innerHTML = `
-      <button class="btn primary" onclick="startFast()">Iniciar Ahora</button>
-      <button class="btn" onclick="openFastModal()">⏱️ Inicio Manual</button>
-    `;
+    $("timer").textContent = "00:00:00"; $("phase").textContent = "Inactivo"; $("phase").style.color = "var(--muted)"; 
+    actionsDiv.innerHTML = `<button class="btn primary" onclick="startFast()">Iniciar Ahora</button><button class="btn" onclick="openFastModal()">⏱️ Programar / Pasado</button>`;
   }
-  
   $("bestFast").textContent = (s.fasts.length ? Math.max(...s.fasts.map(x => x.hours)) : 0).toFixed(1) + "h";
   $("avgFast").textContent = (s.fasts.length ? s.fasts.reduce((a, b) => a + b.hours, 0) / s.fasts.length : 0).toFixed(1) + "h";
   $("fastCount").textContent = s.fasts.length;
 }
-
-function openFastModal() {
-  const s = state();
-  // Mostrar la hora actual de inicio si hay uno activo, o la hora actual si no hay nada
-  const ms = s.fast ? s.fast.start : Date.now();
-  $("fastDateTime").value = getDatetimeLocal(ms);
-  $("fastModal").classList.add("active");
-}
-
-function closeFastModal() {
-  $("fastModal").classList.remove("active");
-}
-
-function saveFastTime(e) {
-  e.preventDefault();
-  const val = $("fastDateTime").value;
-  if(!val) return;
-  
-  const ms = new Date(val).getTime();
-  
-  if(ms > Date.now()) {
-    return toast("⚠️ No puedes iniciar un ayuno en el futuro 😅");
-  }
-  
-  const s = state();
-  s.fast = { start: ms };
-  save(s);
-  closeFastModal();
-  toast("Hora de inicio de ayuno actualizada ⏱️");
-}
+function openFastModal() { const s = state(); const ms = s.fast ? s.fast.start : Date.now(); $("fastDateTime").value = getDatetimeLocal(ms); $("fastModal").classList.add("active"); }
+function closeFastModal() { $("fastModal").classList.remove("active"); }
+function saveFastTime(e) { e.preventDefault(); const val = $("fastDateTime").value; if(!val) return; const ms = new Date(val).getTime(); const s = state(); s.fast = { start: ms }; save(s); closeFastModal(); if(ms > Date.now()) toast("Ayuno programado para el futuro ⏱️"); else toast("Hora de inicio de ayuno actualizada 🔥"); }
 
 // =========================================
 // PESO Y GRÁFICAS
 // =========================================
-function addWeight(e) { 
-  e.preventDefault(); 
-  const s = state();
-  const val = Math.max(20, +$("w").value); 
-  
-  if(val) { 
-    s.weights.unshift({ w: val, date: new Date().toISOString() }); 
-    if (s.profile) s.profile.weight = val; 
-    $("w").value = ""; 
-    save(s); 
-    toast("Peso guardado ⚖️"); 
-  } 
-}
-
-function renderWeights() { 
-  const s = state();
-  $("weights").innerHTML = s.weights.length 
-    ? s.weights.slice(0, 10).map(x => `
-        <div class="row">
-          <b style="font-size: 1.1rem;">${x.w} kg</b>
-          <small class="muted">${new Date(x.date).toLocaleDateString()}</small>
-        </div>
-      `).join("") 
-    : "<p class='muted'>Sin registros. Agrega tu primer peso.</p>"; 
-    
-  draw(); 
-}
-
+function addWeight(e) { e.preventDefault(); const s = state(); const val = Math.max(20, +$("w").value); if(val) { s.weights.unshift({ w: val, date: new Date().toISOString() }); if (s.profile) s.profile.weight = val; $("w").value = ""; save(s); toast("Peso guardado ⚖️"); } }
+function renderWeights() { const s = state(); $("weights").innerHTML = s.weights.length ? s.weights.slice(0, 10).map(x => `<div class="row"><b style="font-size: 1.1rem;">${x.w} kg</b><small class="muted">${new Date(x.date).toLocaleDateString()}</small></div>`).join("") : "<p class='muted'>Sin registros. Agrega tu primer peso.</p>"; draw(); }
 function draw() {
-  const canvas = $("chart"); 
-  if(!canvas) return; 
-  
-  const ctx = canvas.getContext("2d");
-  const arr = state().weights.slice(0, 15).reverse();
-  
-  canvas.width = canvas.parentElement.clientWidth - 48; 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  if (arr.length < 2) {
-    ctx.fillStyle = "var(--muted)";
-    ctx.font = "14px Nunito";
-    ctx.fillText("Agrega al menos 2 pesos para ver la gráfica", 10, canvas.height / 2);
-    return;
-  }
-  
-  const vals = arr.map(x => x.w);
-  const min = Math.min(...vals) - 1;
-  const max = Math.max(...vals) + 1;
-  
-  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-  ctx.strokeStyle = isDark ? "#4ade80" : "#2d6a4f"; 
-  ctx.lineWidth = 4; 
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  
-  ctx.beginPath();
-  
-  arr.forEach((x, i) => { 
-    const px = 20 + i * ((canvas.width - 40) / (arr.length - 1));
-    const py = canvas.height - 20 - ((x.w - min) / (max - min)) * (canvas.height - 40);
-    
-    if(i === 0) {
-      ctx.moveTo(px, py);
-    } else {
-      ctx.lineTo(px, py);
-    }
-  }); 
-  
-  ctx.stroke();
+  const canvas = $("chart"); if(!canvas) return; const ctx = canvas.getContext("2d"); const arr = state().weights.slice(0, 15).reverse();
+  canvas.width = canvas.parentElement.clientWidth - 48; ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (arr.length < 2) { ctx.fillStyle = "var(--muted)"; ctx.font = "14px Nunito"; ctx.fillText("Agrega al menos 2 pesos", 10, canvas.height / 2); return; }
+  const vals = arr.map(x => x.w); const min = Math.min(...vals) - 1; const max = Math.max(...vals) + 1;
+  ctx.strokeStyle = document.documentElement.getAttribute("data-theme") === "dark" ? "#4ade80" : "#2d6a4f"; ctx.lineWidth = 4; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.beginPath();
+  arr.forEach((x, i) => { const px = 20 + i * ((canvas.width - 40) / (arr.length - 1)); const py = canvas.height - 20 - ((x.w - min) / (max - min)) * (canvas.height - 40); if(i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); }); ctx.stroke();
 }
 
 // =========================================
-// IMPORTAR Y EXPORTAR DATA
+// EXPORTAR Y REINICIAR
 // =========================================
-function exportData() { 
-  const a = document.createElement("a"); 
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(state(), null, 2)], { type: "application/json" })); 
-  a.download = `ayukcal-backup-${getLocalISODate()}.json`; 
-  a.click(); 
-}
-
-function importData(e) { 
-  const reader = new FileReader(); 
-  reader.onload = () => { 
-    try { 
-      JSON.parse(reader.result); 
-      localStorage.setItem(KEY, reader.result); 
-      toast("Datos restaurados correctamente."); 
-      setTimeout(() => location.reload(), 1000);
-    } catch(err) { 
-      alert("⚠️ El archivo seleccionado no es válido o está corrupto."); 
-    } 
-  }; 
-  if(e.target.files[0]) reader.readAsText(e.target.files[0]); 
-}
-
-function wipe() { 
-  if (confirm("🚨 ¿ESTÁS SEGURO DE BORRAR TODO? Esta acción es irreversible y perderás tu progreso y base de datos.")) { 
-    localStorage.removeItem(KEY); 
-    location.reload(); 
-  } 
-}
+function exportData() { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(state(), null, 2)], { type: "application/json" })); a.download = `ayukcal-backup-${getLocalISODate()}.json`; a.click(); }
+function importData(e) { const reader = new FileReader(); reader.onload = () => { try { JSON.parse(reader.result); localStorage.setItem(KEY, reader.result); toast("Datos restaurados."); setTimeout(() => location.reload(), 1000); } catch(err) { alert("⚠️ El archivo seleccionado no es válido o está corrupto."); } }; if(e.target.files[0]) reader.readAsText(e.target.files[0]); }
+function wipe() { if (confirm("🚨 ¿ESTÁS SEGURO DE BORRAR TODO? Esta acción es irreversible.")) { localStorage.removeItem(KEY); location.reload(); } }
 
 // =========================================
 // CICLO PRINCIPAL
 // =========================================
 function refresh() {
   const s = state();
-  const t = totalsForDate(viewDate);
-  
-  $("homeKcal").textContent = Math.round(t.kcal); 
   $("homeWeight").textContent = s.profile?.weight ? s.profile.weight + " kg" : "--"; 
-  $("homeGoal").textContent = s.profile ? macros(s.profile).kcal : "--";
-  
-  renderProfile(); 
-  renderDaily(); 
-  renderFoods(); 
-  renderFast(); 
-  renderWeights();
+  renderHeader(); renderProfile(); renderDaily(); 
+  if($("q") && $("q").value !== undefined && document.getElementById("comidas").classList.contains("active")) { renderFoods(); }
+  renderTodayLists(); renderFast(); renderWeights();
 }
-
-// Loop del reloj de ayuno
-setInterval(() => { 
-  if (state().fast) renderFast(); 
-}, 1000);
+setInterval(() => { if (state().fast) renderFast(); }, 1000);
 
 </script>
 </body>
