@@ -1132,10 +1132,10 @@ function renderFast() {
     $("timer").textContent = "00:00:00"; $("phase").textContent = "Inactivo"; $("phase").style.color = "var(--muted)"; 
     actionsDiv.innerHTML = `<button class="btn primary" onclick="startFast()">Iniciar Ahora</button><button class="btn" onclick="openFastModal()">⏱️ Programar / Pasado</button>`;
     
-    // Si no hay ayuno activo, mostramos el último récord en el panel de Inicio
-    if (s.fasts && s.fasts.length > 0) {
-        homeFastText = formatHM(s.fasts[0].hours); 
-    }
+  // Si no hay ayuno activo, mostramos el último récord en el panel de Inicio
+  if (s.fasts && s.fasts.length > 0) {
+    homeFastText = formatHM(s.fasts[0].hours); 
+  }
   
   // Actualizamos el cable visual que faltaba en el menú principal
   if($("homeFast")) $("homeFast").textContent = homeFastText;
