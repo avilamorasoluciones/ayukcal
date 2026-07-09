@@ -1134,9 +1134,8 @@ function renderFast() {
     
     // Si no hay ayuno activo, mostramos el último récord en el panel de Inicio
     if (s.fasts && s.fasts.length > 0) {
-        homeFastText = `${s.fasts[0].hours}h`; 
+        homeFastText = formatHM(s.fasts[0].hours); 
     }
-  }
   
   // Actualizamos el cable visual que faltaba en el menú principal
   if($("homeFast")) $("homeFast").textContent = homeFastText;
