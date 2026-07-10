@@ -338,6 +338,7 @@
 </head>
 <body>
 
+<!-- IMPORTAR LA BASE DE DATOS EXTERNA -->
 <script src="db.js"></script>
 
 <header>
@@ -349,6 +350,7 @@
       </div>
     </button>
 
+    <!-- PLACA DE USUARIO (Validado con truncado ellipsis) -->
     <div id="userBadge" class="user-badge" title=""></div>
     
     <div class="nav-menu">
@@ -366,17 +368,21 @@
 
 <main>
   
+  <!-- =========================================
+       VISTA: INICIO
+       ========================================= -->
   <section id="inicio" class="view active container">
     <div class="section-header">
       <h1>Tu cuerpo,<br>tus reglas.</h1>
       <p class="muted">Controla nutrición, hidratación, ayuno y peso. Todo guardado en tu dispositivo.</p>
     </div>
 
+    <!-- PANEL DE RESUMEN DIARIO -->
     <div class="panel">
       <h2>🌞 Resumen de Hoy</h2>
       <div class="grid four">
         <div class="kpi"><span>Netas Kcal</span><b id="homeKcal">0</b></div>
-        <div class="kpi"><span>Ayuno</span><b id="homeFast">0h</b></div>
+        <div class="kpi"><span>Ayuno</span><b id="homeFast">0h 0m</b></div>
         <div class="kpi"><span>Peso</span><b id="homeWeight">--</b></div>
         <div class="kpi"><span>Meta Kcal</span><b id="homeGoal">--</b></div>
       </div>
@@ -385,8 +391,10 @@
       </div>
     </div>
 
+    <!-- PANEL RÁPIDO DE HIDRATACIÓN Y EJERCICIO -->
     <div class="grid two">
       
+      <!-- AGUA CON ANIMACIÓN DE TANQUE Y CUSTOM INPUT -->
       <div class="panel" style="border-color: var(--water-bg); padding-bottom: 20px;">
         <h2>💧 Hidratación</h2>
         <p class="muted" style="margin-bottom: 12px; font-size: 0.9rem;">Meta: <span id="waterGoalLabel">--</span> ml</p>
@@ -410,6 +418,7 @@
         </div>
       </div>
 
+      <!-- EJERCICIO CON PISTA ANIMADA -->
       <div class="panel">
         <h2>🏃 Ejercicio Físico</h2>
         <p class="muted" style="margin-bottom: 12px; font-size: 0.9rem;">Pista de meta (1000 Kcal base)</p>
@@ -428,6 +437,9 @@
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: DIARIO (CRUD TOTAL)
+       ========================================= -->
   <section id="hoy" class="view container">
     <div class="section-header">
       <h1>📊 Diario</h1>
@@ -461,6 +473,9 @@
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: COMIDAS Y BUSCADOR
+       ========================================= -->
   <section id="comidas" class="view container">
     <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
@@ -474,10 +489,14 @@
       <h2>🔎 Buscar Alimento</h2>
       <input id="q" class="input" placeholder="Ej. Huevo, Cafe, Platano..." oninput="renderFoods()" style="margin-bottom: 16px;" />
       <div id="foods" class="list" style="max-height: 550px; overflow-y: auto; padding-right: 8px;">
-        </div>
+        <!-- Inyectado por JS -->
+      </div>
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: GESTOR DE BASE DE DATOS GLOBAL
+       ========================================= -->
   <section id="db" class="view container">
     <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
@@ -515,10 +534,14 @@
       <h2>📋 Catálogo Completo</h2>
       <input id="dbSearch" class="input" placeholder="Buscar para editar o borrar..." oninput="renderDBList()" style="margin-bottom: 15px;" />
       <div id="dbList" class="list" style="max-height: 500px; overflow-y: auto;">
-        </div>
+        <!-- Inyectado por JS -->
+      </div>
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: AYUNO
+       ========================================= -->
   <section id="ayuno" class="view container">
     <div class="section-header">
       <h1>⏳ Ayuno</h1>
@@ -533,12 +556,20 @@
     </div>
 
     <div class="grid three">
-      <div class="panel kpi"><span>Récord Max</span><b id="bestFast">0h</b></div>
-      <div class="panel kpi"><span>Promedio</span><b id="avgFast">0h</b></div>
+      <div class="panel kpi"><span>Récord Max</span><b id="bestFast">0h 0m</b></div>
+      <div class="panel kpi"><span>Promedio</span><b id="avgFast">0h 0m</b></div>
       <div class="panel kpi"><span>Completados</span><b id="fastCount">0</b></div>
+    </div>
+
+    <div class="panel">
+      <h2>📚 Historial de Ayunos</h2>
+      <div id="fastHistoryList" class="list" style="max-height: 350px; overflow-y: auto;"></div>
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: PESO
+       ========================================= -->
   <section id="peso" class="view container">
     <div class="section-header">
       <h1>⚖️ Peso</h1>
@@ -559,6 +590,9 @@
     </div>
   </section>
 
+  <!-- =========================================
+       VISTA: PERFIL (Validado lógicamente)
+       ========================================= -->
   <section id="perfil" class="view container">
     <div class="section-header">
       <h1>👤 Perfil</h1>
@@ -567,16 +601,20 @@
 
     <div class="grid two">
       <form class="panel form" onsubmit="saveProfile(event)">
+        <!-- Máximo 15 caracteres para evitar nombres ridículamente largos -->
         <input id="name" class="input" placeholder="Tu nombre" maxlength="15" />
         
         <div class="grid two">
           <input id="age" class="input" type="number" min="10" max="110" placeholder="Edad" required />
+          <!-- Altura humana con tope realista -->
           <input id="height" class="input" type="number" min="100" max="250" placeholder="Altura (cm)" required />
         </div>
         
+        <!-- Peso validado de 20kg a 300kg -->
         <input id="weight" class="input" type="number" min="20" max="300" step="0.1" placeholder="Peso actual (kg)" required />
         
         <label class="muted" style="font-size: 0.9rem; font-weight: 700; margin-bottom: -4px;">Meta Calórica Manual (Opcional)</label>
+        <!-- Permitimos 0, pero la lógica lanzará advertencia -->
         <input id="manualGoal" class="input" type="number" min="0" max="8000" placeholder="Ej. 1500 (Vacío = Auto)" />
         
         <select id="gender" class="input">
@@ -620,6 +658,7 @@
 
 </main>
 
+<!-- MODAL CALCULADORA DE PORCIONES -->
 <div id="portionModal" class="modal-overlay">
   <div class="modal">
     <h2 id="modalFoodName" style="font-size: 1.3rem; margin-bottom: 8px;">Nombre Alimento</h2>
@@ -639,6 +678,7 @@
   </div>
 </div>
 
+<!-- MODAL PROGRAMAR AYUNO -->
 <div id="fastModal" class="modal-overlay">
   <div class="modal">
     <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Programar Ayuno</h2>
@@ -653,6 +693,26 @@
   </div>
 </div>
 
+<!-- MODAL EDITAR AYUNO COMPLETADO -->
+<div id="editPastFastModal" class="modal-overlay">
+  <div class="modal">
+    <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Editar Registro</h2>
+    <p class="muted" style="font-size: 0.95rem; margin-bottom: 24px;">Modifica las horas totales de este ayuno.</p>
+    <form class="form" onsubmit="savePastFastEdit(event)">
+      <input type="hidden" id="editPastFastIndex" />
+      <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+        <input id="editPastFastHours" class="input" type="number" min="0.1" step="0.1" required style="font-size: 1.3rem; text-align: center; font-weight: 900;" />
+        <span style="font-weight: 900; color: var(--muted); font-size: 1.1rem; min-width: 50px;">Horas</span>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" style="flex: 1;" onclick="closeEditPastFastModal()">Cancelar</button>
+        <button type="submit" class="btn primary" style="flex: 1;">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL EJERCICIO MEJORADO -->
 <div id="exerciseModal" class="modal-overlay">
   <div class="modal">
     <h2 style="font-size: 1.3rem; margin-bottom: 8px;">Registrar Actividad</h2>
@@ -707,6 +767,17 @@ const getDatetimeLocal = (ms) => {
   const d = new Date(ms);
   const tzOffset = d.getTimezoneOffset() * 60000;
   return new Date(d - tzOffset).toISOString().slice(0, 16);
+};
+
+// FORMATEADOR VISUAL DE AYUNOS (Horas y minutos sin decimales feos)
+const formatHM = (dec) => {
+  if(!dec) return "0h 0m";
+  let mins = Math.round(dec * 60);
+  let h = Math.floor(mins / 60);
+  let m = mins % 60;
+  if(h === 0) return `${m}m`;
+  if(m === 0) return `${h}h`;
+  return `${h}h ${m}m`;
 };
 
 const KEY = "ayukcal_v8"; 
@@ -1098,7 +1169,7 @@ function saveProfile(e) {
 }
 
 // =========================================
-// AYUNO (AHORA ACTUALIZA EL INICIO)
+// AYUNO (HISTORIAL CRUD Y FORMATEADO VISUAL)
 // =========================================
 function startFast() { const s = state(); s.fast = { start: Date.now() }; save(s); toast("Ayuno iniciado ⏳"); }
 function stopFast() {
@@ -1107,13 +1178,15 @@ function stopFast() {
   const hours = (Date.now() - s.fast.start) / 36e5;
   let msg = hours < 16 ? `Llevas ${hours.toFixed(1)}h. Es un ayuno normal.\n\n¿Finalizar ayuno?` : hours < 20 ? `Llevas ${hours.toFixed(1)}h. Come proteína primero, carbs al final.\n\n¿Finalizar ayuno?` : `🚨 ¡AYUNO PROFUNDO DE ${hours.toFixed(1)}h!\n\nRompe SOLO CON PROTEÍNA MAGRA. Evita carbs por 45 mins.\n\n¿Finalizar ayuno?`;
   if(!confirm(msg)) return;
-  s.fasts.unshift({ hours: +hours.toFixed(4), date: new Date().toISOString() }); s.fast = null; save(s); toast(`¡Ayuno de ${hours.toFixed(1)}h completado! 🏆`);
+  
+  s.fasts.unshift({ hours: +hours.toFixed(4), date: new Date().toISOString() }); 
+  s.fast = null; save(s); toast(`¡Ayuno de ${hours.toFixed(1)}h completado! 🏆`);
 }
 function cancelFast() { if(confirm("¿Cancelar este ayuno? No se guardará en tu historial.")) { const s = state(); s.fast = null; save(s); toast("Ayuno borrado."); } }
 
 function renderFast() {
   const s = state(); const actionsDiv = $("ayunoActions");
-  let homeFastText = "0h"; // Texto por defecto para la pestaña de Inicio
+  let homeFastText = "0h 0m"; 
 
   if (s.fast) {
     const now = Date.now();
@@ -1126,28 +1199,81 @@ function renderFast() {
       const timeInSeconds = Math.floor((now - s.fast.start) / 1000); const h = Math.floor(timeInSeconds / 3600); const m = Math.floor((timeInSeconds % 3600) / 60); const sec = timeInSeconds % 60;
       $("timer").textContent = [h, m, sec].map(x => String(x).padStart(2, "0")).join(":"); $("phase").textContent = "🔥 En curso..."; $("phase").style.color = "var(--primary)";
       actionsDiv.innerHTML = `<button class="btn danger" onclick="stopFast()">Finalizar Ayuno</button><button class="btn" style="color: var(--danger); border-color: transparent;" onclick="cancelFast()">Borrar</button><button class="btn" onclick="openFastModal()">✏️ Editar inicio</button>`;
-      homeFastText = `${h}h ${m}m`; // Muestra el tiempo en vivo en el panel de Inicio
+      homeFastText = `${h}h ${m}m`; // Panel de inicio: tiempo vivo sin segundos
     }
   } else { 
     $("timer").textContent = "00:00:00"; $("phase").textContent = "Inactivo"; $("phase").style.color = "var(--muted)"; 
     actionsDiv.innerHTML = `<button class="btn primary" onclick="startFast()">Iniciar Ahora</button><button class="btn" onclick="openFastModal()">⏱️ Programar / Pasado</button>`;
     
-  // Si no hay ayuno activo, mostramos el último récord en el panel de Inicio
-  if (s.fasts && s.fasts.length > 0) {
-    homeFastText = formatHM(s.fasts[0].hours); 
+    // Mostramos visualmente y formateado el último récord en el panel de Inicio
+    if (s.fasts && s.fasts.length > 0) {
+        homeFastText = formatHM(s.fasts[0].hours); 
+    }
   }
   
-  // Actualizamos el cable visual que faltaba en el menú principal
   if($("homeFast")) $("homeFast").textContent = homeFastText;
 
-  $("bestFast").textContent = (s.fasts.length ? Math.max(...s.fasts.map(x => x.hours)) : 0).toFixed(1) + "h";
-  $("avgFast").textContent = (s.fasts.length ? s.fasts.reduce((a, b) => a + b.hours, 0) / s.fasts.length : 0).toFixed(1) + "h";
+  // KPIs formateados sin decimales horribles
+  $("bestFast").textContent = s.fasts.length ? formatHM(Math.max(...s.fasts.map(x => x.hours))) : "0h 0m";
+  $("avgFast").textContent = s.fasts.length ? formatHM(s.fasts.reduce((a, b) => a + b.hours, 0) / s.fasts.length) : "0h 0m";
   $("fastCount").textContent = s.fasts.length;
+
+  // Pintar la nueva lista de historial
+  const historyHtml = s.fasts.map((f, i) => `
+    <div class="row">
+      <div>
+        <b style="font-size: 1.1rem;">${formatHM(f.hours)}</b>
+        <br><small class="muted">${new Date(f.date).toLocaleDateString()} a las ${new Date(f.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+      </div>
+      <div style="display:flex; gap:6px;">
+        <button class="btn" style="padding:8px 12px; font-size:0.85rem;" onclick="openEditPastFast(${i})">✏️</button>
+        <button class="btn danger" style="padding:8px 12px; font-size:0.85rem;" onclick="deletePastFast(${i})">❌</button>
+      </div>
+    </div>
+  `).join("");
+  
+  const historyListEl = $("fastHistoryList");
+  if(historyListEl) {
+     historyListEl.innerHTML = historyHtml || "<p class='muted'>No hay ayunos completados.</p>";
+  }
 }
 
+// Funciones del Modal de Programar
 function openFastModal() { const s = state(); const ms = s.fast ? s.fast.start : Date.now(); $("fastDateTime").value = getDatetimeLocal(ms); $("fastModal").classList.add("active"); }
 function closeFastModal() { $("fastModal").classList.remove("active"); }
 function saveFastTime(e) { e.preventDefault(); const val = $("fastDateTime").value; if(!val) return; const ms = new Date(val).getTime(); const s = state(); s.fast = { start: ms }; save(s); closeFastModal(); if(ms > Date.now()) toast("Ayuno programado para el futuro ⏱️"); else toast("Hora de inicio de ayuno actualizada 🔥"); }
+
+// Funciones del CRUD para el historial de Ayunos
+function openEditPastFast(i) {
+  const s = state();
+  $("editPastFastIndex").value = i;
+  $("editPastFastHours").value = s.fasts[i].hours; // Trae los decimales reales al input para editarlos exacto
+  $("editPastFastModal").classList.add("active");
+}
+function closeEditPastFastModal() { $("editPastFastModal").classList.remove("active"); }
+
+function savePastFastEdit(e) {
+  e.preventDefault();
+  const i = $("editPastFastIndex").value;
+  const h = +$("editPastFastHours").value;
+  const s = state();
+  
+  if(h > 0 && s.fasts[i]) {
+    s.fasts[i].hours = h;
+    save(s);
+    closeEditPastFastModal();
+    toast("Registro de ayuno actualizado ✔️");
+  }
+}
+
+function deletePastFast(i) {
+  if(confirm("¿Seguro que quieres eliminar este registro de ayuno? Afectará tus promedios.")) {
+    const s = state();
+    s.fasts.splice(i, 1);
+    save(s);
+    toast("Ayuno eliminado ❌");
+  }
+}
 
 // =========================================
 // PESO Y GRÁFICAS
